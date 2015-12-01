@@ -26,12 +26,14 @@ regaloNavidad.Preload.prototype = {
         this.load.image('obj_05', 'assets/images/obj_05.png');
         this.load.image('obj_06', 'assets/images/obj_06.png');
         this.load.image('obj_07', 'assets/images/obj_07.png');
+        this.load.spritesheet('life_001', 'assets/images/life_001.png',290,70,4);
+        this.load.spritesheet('life_002', 'assets/images/life_002.png',290,70,2);
         this.load.spritesheet('hud_enemigos', 'assets/images/hud_enemigos.png',240,200,6);
         this.load.spritesheet('player', 'assets/images/player_run.png',130,130,8);
         this.load.spritesheet('player_jump', 'assets/images/player_jump.png',130,130,7);
         this.load.spritesheet('player_dmg', 'assets/images/player_dmg.png',130,130,6);
     },
     create: function() {
-        this.state.start('Game');
+        this.state.start('PreGame');
     }
 };
