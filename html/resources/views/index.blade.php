@@ -10,8 +10,8 @@
 	<title>El Regalo Prometido - Mitocondria</title>
 	<!-- !CSS -->
 	<!-- inject:css -->
-	<link rel="stylesheet" href="../../public/assets/css/reset.min.css">
-	<link rel="stylesheet" href="../../public/assets/css/style.min.css">
+	<link rel="stylesheet" href="assets/css/reset.min.css">
+	<link rel="stylesheet" href="assets/css/style.min.css">
 	<!-- endinject -->
 
 	<!-- !JS -->
@@ -20,12 +20,10 @@
 	<script src="../../public/assets/js/jquery/dist/jquery.min.js"></script>
 	<script src="../../public/assets/js/phaser/build/phaser.min.js"></script>
 	<!-- endinject -->
-	<script src="/vendors_game/videoGame/dist/1.Boot.js"></script>
-	<script src="/vendors_game/videoGame/dist/2.Preload.js"></script>
-	<script src="/vendors_game/videoGame/dist/3.1.PreGame.js"></script>
-	<script src="/vendors_game/videoGame/dist/3.2.Game.js"></script>
-	<script src="/vendors_game/videoGame/dist/3.3.PostGame.js"></script>
+
 	<!-- game:js -->
+	<script src="../../public/assets/js/videoGame/dist/1.Boot.min.js"></script>
+	<script src="../../public/assets/js/videoGame/dist/2.Preload.min.js"></script>
 	<!-- endinject -->
 </head>
 
