@@ -1,4 +1,3 @@
-// //adsasd
 var gulp = require("gulp"),
     inject = require("gulp-inject"),
     watch = require('gulp-watch'),
