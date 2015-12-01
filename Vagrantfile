@@ -44,7 +44,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=777","fmode=666"]
 
-  config.vm.synced_folder "./html", "/var/www/html"
+  config.vm.synced_folder "./html", "/var/www/html", :mount_options => ["dmode=777","fmode=666"]
+
+
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
