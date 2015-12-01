@@ -7,40 +7,40 @@ var gulp = require("gulp"),
     minifyCss = require('gulp-minify-css');
 
 gulp.task('injectCss', function () {
-    gulp.src('./html/index.php')
-    .pipe(inject(gulp.src('./html/assets/css/**/*.min.css', {read: false}), {relative: true}))
-    .pipe(gulp.dest('./html'));
+    gulp.src('./html/resources/views/blade.index.php')
+    .pipe(inject(gulp.src('./html/public/assets/css/**/*.min.css', {read: false}), {relative: true}))
+    .pipe(gulp.dest('./html/resources/views/'));
 });
 
 gulp.task('injectJs', function () {
-    gulp.src('./html/index.php')
-    .pipe(inject(gulp.src('./html/assets/js/videoGame/**/main.min.js', {read: false}), {relative: true}))
-    .pipe(inject(gulp.src(['./html/assets/js/videoGame/**/*.js','!./html/assets/js/videoGame/**/main.min.js'], {read: false}), {name: 'game', relative: true}))
-    .pipe(inject(gulp.src(['./html/assets/js/*/**/*.js','./html/assets/js/**/*.js','!./html/assets/js/videoGame/dist/*.js'], {read: false}), {name: 'head', relative: true}))
-    .pipe(gulp.dest('./html'));
+    gulp.src('./html/resources/views/blade.index.php')
+    .pipe(inject(gulp.src('./html/public/assets/js/videoGame/**/main.min.js', {read: false}), {relative: true}))
+    .pipe(inject(gulp.src(['./html/public/assets/js/videoGame/**/*.js','!./html/public/assets/js/videoGame/**/main.min.js'], {read: false}), {name: 'game', relative: true}))
+    .pipe(inject(gulp.src(['./html/public/assets/js/*/**/*.js','./html/public/assets/js/**/*.js','!./html/public/assets/js/videoGame/dist/*.js'], {read: false}), {name: 'head', relative: true}))
+    .pipe(gulp.dest('./html/resources/views/'));
 });
 
 gulp.task('uglify', function() {
-    gulp.src(['./html/vendors/videoGame/*.js', './html/vendors/*/dist/*.js', './html/vendors/*/build/*.js', '!./**/*.min.js'])//, {base: './'})
+    gulp.src(['./html/public/assets/videoGame/*.js', './html/vendors_game/*/dist/*.js', './html/vendors_game/*/build/*.js', '!./**/*.min.js'])//, {base: './'})
     .pipe(uglify())
     .pipe(rename({
         extname: '.min.js'
     }))
-    .pipe(gulp.dest('./html/assets/js'));
+    .pipe(gulp.dest('./html/public/assets/js'));
 });
 
 gulp.task('minify', function() {
-    gulp.src('./html/vendors/css/*.css')
+    gulp.src('./html/vendors_game/css/*.css')
     .pipe(minifyCss({compatibility: 'ie8'}))
     .pipe(rename({
         extname: '.min.css'
     }))
-    .pipe(gulp.dest('./html/assets/css'));
+    .pipe(gulp.dest('./html/public/assets/css'));
 });
 
 gulp.task('watch', function() {
-    gulp.watch('./html/vendors/css/*.css', ['minify']);
-    gulp.watch('./html/vendors/videoGame/dist/*.js', ['uglify']);
+    gulp.watch('./html/vendors_game/css/*.css', ['minify']);
+    gulp.watch('./html/public/assets/videoGame/dist/*.js', ['uglify']);
 });
 
 gulp.task('default', ['watch','uglify','minify','injectCss','injectJs']);
