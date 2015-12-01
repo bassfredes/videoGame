@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
-	<title>El Regalo Prometido - Mitocondria</title>
+	<title>El Último Regalo - Mitocondria</title>
 	<!-- !CSS -->
 	<!-- inject:css -->
 	<link rel="stylesheet" href="assets/css/reset.min.css">
@@ -22,7 +22,9 @@
 	<!-- endinject -->
 	<script src="vendors/videoGame/dist/1.Boot.js"></script>
 	<script src="vendors/videoGame/dist/2.Preload.js"></script>
-	<script src="vendors/videoGame/dist/3.Game.js"></script>
+	<script src="vendors/videoGame/dist/3.1.PreGame.js"></script>
+	<script src="vendors/videoGame/dist/3.2.Game.js"></script>
+	<script src="vendors/videoGame/dist/3.3.PostGame.js"></script>
 	<!-- game:js -->
 	<!-- endinject -->
 </head>
