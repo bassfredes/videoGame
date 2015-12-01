@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
-	<title>El Regalo Prometido - Mitocondria</title>
+	<title>El Último Regalo - Mitocondria</title>
 	<!-- !CSS -->
 	<!-- inject:css -->
 	<link rel="stylesheet" href="/assets/css/reset.min.css">
