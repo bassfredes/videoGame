@@ -6,13 +6,13 @@ var gulp = require("gulp"),
     minifyCss = require('gulp-minify-css');
 
 gulp.task('injectCss', function () {
-    gulp.src('./html/resources/views/blade.index.php')
+    gulp.src('./html/resources/views/index.blade.php')
     .pipe(inject(gulp.src('./html/public/assets/css/**/*.min.css', {read: false}), {relative: true}))
     .pipe(gulp.dest('./html/resources/views/'));
 });
 
 gulp.task('injectJs', function () {
-    gulp.src('./html/resources/views/blade.index.php')
+    gulp.src('./html/resources/views/index.blade.php')
     .pipe(inject(gulp.src('./html/public/assets/js/videoGame/**/main.min.js', {read: false}), {relative: true}))
     .pipe(inject(gulp.src(['./html/public/assets/js/videoGame/**/*.js','!./html/public/assets/js/videoGame/**/main.min.js'], {read: false}), {name: 'game', relative: true}))
     .pipe(inject(gulp.src(['./html/public/assets/js/*/**/*.js','./html/public/assets/js/**/*.js','!./html/public/assets/js/videoGame/dist/*.js'], {read: false}), {name: 'head', relative: true}))
@@ -39,7 +39,7 @@ gulp.task('minify', function() {
 
 gulp.task('watch', function() {
     gulp.watch('./html/vendors_game/css/*.css', ['minify']);
-    gulp.watch('./html/public/assets/videoGame/dist/*.js', ['uglify']);
+    gulp.watch('./html/vendors_game/videoGame/dist/*.js', ['uglify']);
 });
 
 gulp.task('default', ['watch','uglify','minify','injectCss','injectJs']);
