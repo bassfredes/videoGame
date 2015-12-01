@@ -4,7 +4,7 @@ regaloNavidad.Boot = function() {};
 regaloNavidad.Boot.prototype = {
     preload: function() {
         //Assets que se usaran en la Carga
-        this.load.image('preloadbar', '/public/assets/images/preloader-bar.png');
+        this.load.image('preloadbar', '/assets/images/preloader-bar.png');
     },
     create: function() {
         //Backgroundcolor para el Loader

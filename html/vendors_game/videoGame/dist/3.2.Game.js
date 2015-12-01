@@ -192,7 +192,6 @@ regaloNavidad.Game.prototype = {
             //Se agrega el Sprite dentro del area permitida del World
             //de esta forma no desapareceran si se alcanza el limite y vuelve al comienzo /o Apareceran de la nada
             numberOfEnemy = this.game.rnd.integerInRange(1, 7);
-            numberOfEnemy = 7;
             switch(numberOfEnemy){
                 case 1:
                     this.tryNotOverlap(485, numberOfEnemy, numEnemy);
