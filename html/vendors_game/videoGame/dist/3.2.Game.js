@@ -1,5 +1,6 @@
 var regaloNavidad = regaloNavidad || {};
 //Seteo algunas variables generales
+var stadoSiguiente;
 var vidas = 5;
 var puntaje = 0;
 var tiempo = 0;
@@ -22,6 +23,7 @@ regaloNavidad.Game.prototype = {
         this.game.time.advancedTiming = true;
     },
     create: function() {
+        stadoSiguiente = this.state;
         //Configuro el mundo y sus limites
         this.game.world.setBounds(0, 0, 8000, this.game.height);
 
@@ -165,8 +167,14 @@ regaloNavidad.Game.prototype = {
     actualizarEstados: function(datoToActualizar) {
         switch(datoToActualizar){
             case 'vida':
-                if(vidas > 0){
+                if(vidas > 1){
                     vidas--;
+                }
+                else {
+                    this.player.alive = false;
+                    this.stopped = true;
+                    this.game.paused = true;
+                    this.game.stateTransition.to('PostGame_loser');
                 }
                 if(vidas>1){
                     this.hud_Life01.frame = vidas-2
@@ -354,7 +362,7 @@ regaloNavidad.Game.prototype = {
     render: function() {
         this.game.debug.inputInfo(32, 38);
         this.game.debug.text(this.game.time.fps || '--', 890, 50, "#FFF", "40px Courier");
-        this.game.debug.text('jump:' + saltando, 32, 20);
+        //this.game.debug.text('jump:' + saltando, 32, 20);
         //this.game.debug.body(this.player);
         //this.game.debug.spriteBounds(this.objects);
     }
