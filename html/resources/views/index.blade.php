@@ -32,7 +32,7 @@
 	<!-- game:js -->
 	<!-- endinject -->
 </head>
-
+<!-- -->
 <body>
 	<div id="wrapper">
 		<div id="header"></div>
