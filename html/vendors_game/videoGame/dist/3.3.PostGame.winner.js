@@ -1,7 +1,7 @@
 var regaloNavidad = regaloNavidad || {};
 
-regaloNavidad.PostGame = function() {};
-regaloNavidad.PostGame.prototype = {
+regaloNavidad.PostGame_winner = function() {};
+regaloNavidad.PostGame_winner.prototype = {
     preload: function() {
 
     },

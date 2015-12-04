@@ -1,9 +1,8 @@
 var regaloNavidad = regaloNavidad || {};
 
-regaloNavidad.PostGame = function() {};
-regaloNavidad.PostGame.prototype = {
+regaloNavidad.PostGame_loser = function() {};
+regaloNavidad.PostGame_loser.prototype = {
     preload: function() {
-
     },
     create: function() {
         this.backgroundLoser = this.game.add.sprite(0, 0, 'backgroundLoser');

@@ -10,23 +10,24 @@
 	<title>El Último Regalo - Mitocondria</title>
 	<!-- !CSS -->
 	<!-- inject:css -->
-	<link rel="stylesheet" href="/assets/css/reset.min.css">
-	<link rel="stylesheet" href="/assets/css/style.min.css">
+	<link rel="stylesheet" href="assets/css/reset.min.css">
+	<link rel="stylesheet" href="assets/css/style.min.css">
 	<!-- endinject -->
 
 	<!-- !JS -->
 	<!-- head:js -->
-	<script src="/assets/js/gameController/dist/gamecontroller.min.js"></script>
-	<script src="/assets/js/jquery/dist/jquery.min.js"></script>
-	<script src="/assets/js/phaser/build/phaser.min.js"></script>
+	<script src="assets/js/gameController/dist/gamecontroller.min.js"></script>
+	<script src="assets/js/jquery/dist/jquery.min.js"></script>
+	<script src="assets/js/phaser/build/phaser.min.js"></script>
+	<script src="assets/js/state-transition/dist/phaser-state-transition-plugin.min.js"></script>
 	<!-- endinject -->
-
 	<!-- game:js -->
-	<script src="/assets/js/videoGame/dist/1.Boot.min.js"></script>
-	<script src="/assets/js/videoGame/dist/2.Preload.min.js"></script>
-	<script src="/assets/js/videoGame/dist/3.1.PreGame.min.js"></script>
-	<script src="/assets/js/videoGame/dist/3.2.Game.min.js"></script>
-	<script src="/assets/js/videoGame/dist/3.3.PostGame.min.js"></script>
+	<script src="assets/js/videoGame/dist/1.Boot.min.js"></script>
+	<script src="assets/js/videoGame/dist/2.Preload.min.js"></script>
+	<script src="assets/js/videoGame/dist/3.1.PreGame.min.js"></script>
+	<script src="assets/js/videoGame/dist/3.2.Game.min.js"></script>
+	<script src="assets/js/videoGame/dist/3.3.PostGame.loser.min.js"></script>
+	<script src="assets/js/videoGame/dist/3.3.PostGame.winner.min.js"></script>
 	<!-- endinject -->
 </head>
 
@@ -42,7 +43,7 @@
 	<!--!/#wrapper -->
 	<!-- !Javascript - for fast page loading -->
 	<!-- inject:js -->
-	<script src="/assets/js/videoGame/dist/main.min.js"></script>
+	<script src="assets/js/videoGame/dist/main.min.js"></script>
 	<!-- endinject -->
 </body>
 

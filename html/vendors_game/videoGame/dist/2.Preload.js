@@ -82,6 +82,6 @@ regaloNavidad.Preload.prototype = {
     },
     loadComplete: function() {
         console.log("completo");
-        gameVar.stateTransition.to('PostGame_loser');
+        gameVar.stateTransition.to('PreGame');
     }
 };
