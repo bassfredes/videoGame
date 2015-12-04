@@ -4,98 +4,89 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
+use App;
+use Session;
+use App\User;
+use Auth;
+
+
 
 
 class NavidadController extends Controller{
     public function index(){
         return view('index');
     }
-    public function loginFacebook(){
-        return view('baseFb');
-        $fb = new Facebook\Facebook([
-          'app_id' => '1644249609162562',
-          'app_secret' => '{your-app-secret}',
-          'default_graph_version' => 'v2.4',
-        ]);
-
-        $helper = $fb->getRedirectLoginHelper();
-
-        $permissions = ['email']; // Optional permissions
-        $loginUrl = $helper->getLoginUrl('https://example.com/fb-callback.php', $permissions);
-
-        echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
-        return view('baseFb');
+    public function loginFacebook(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb){
+        //$fb = App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
+        $login_link = $fb
+        ->getRedirectLoginHelper()
+        ->getLoginUrl('http://localhost:8080/fbcallback', ['email', 'user_events']);
+        return view('fbLogin', compact('login_link'));
     }
-    /*public function fbCallback(){
-        $fb = new Facebook\Facebook([
-          'app_id' => '1644249609162562',
-          'app_secret' => '{your-app-secret}',
-          'default_graph_version' => 'v2.4',
-          ]);
-
-        $helper = $fb->getRedirectLoginHelper();
-
+    public function fbCallback(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb){
+        // Obtain an access token.
         try {
-          $accessToken = $helper->getAccessToken();
-        } catch(Facebook\Exceptions\FacebookResponseException $e) {
-          // When Graph returns an error
-          echo 'Graph returned an error: ' . $e->getMessage();
-          exit;
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
-          // When validation fails or other local issues
-          echo 'Facebook SDK returned an error: ' . $e->getMessage();
-          exit;
+            $token = $fb->getAccessTokenFromRedirect();
+        } catch (Facebook\Exceptions\FacebookSDKException $e) {
+            dd($e->getMessage());
         }
 
-        if (! isset($accessToken)) {
-          if ($helper->getError()) {
-            header('HTTP/1.0 401 Unauthorized');
-            echo "Error: " . $helper->getError() . "\n";
-            echo "Error Code: " . $helper->getErrorCode() . "\n";
-            echo "Error Reason: " . $helper->getErrorReason() . "\n";
-            echo "Error Description: " . $helper->getErrorDescription() . "\n";
-          } else {
-            header('HTTP/1.0 400 Bad Request');
-            echo 'Bad request';
-          }
-          exit;
+        // Access token will be null if the user denied the request
+        // or if someone just hit this URL outside of the OAuth flow.
+        if (! $token) {
+            // Get the redirect helper
+            $helper = $fb->getRedirectLoginHelper();
+
+            if (! $helper->getError()) {
+                abort(403, 'Unauthorized action.');
+            }
+
+            // User denied the request
+            dd(
+                $helper->getError(),
+                $helper->getErrorCode(),
+                $helper->getErrorReason(),
+                $helper->getErrorDescription()
+            );
         }
 
-        // Logged in
-        echo '<h3>Access Token</h3>';
-        var_dump($accessToken->getValue());
+        if (! $token->isLongLived()) {
+            // OAuth 2.0 client handler
+            $oauth_client = $fb->getOAuth2Client();
 
-        // The OAuth 2.0 client handler helps us manage access tokens
-        $oAuth2Client = $fb->getOAuth2Client();
-
-        // Get the access token metadata from /debug_token
-        $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-        echo '<h3>Metadata</h3>';
-        var_dump($tokenMetadata);
-
-        // Validation (these will throw FacebookSDKException's when they fail)
-        $tokenMetadata->validateAppId($config['app_id']);
-        // If you know the user ID this access token belongs to, you can validate it here
-        // $tokenMetadata->validateUserId('123');
-        $tokenMetadata->validateExpiration();
-
-        if (! $accessToken->isLongLived()) {
-          // Exchanges a short-lived access token for a long-lived one
-          try {
-            $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-          } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo "<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>";
-            exit;
-          }
-          echo '<h3>Long-lived</h3>';
-          var_dump($accessToken->getValue());
+            // Extend the access token.
+            try {
+                $token = $oauth_client->getLongLivedAccessToken($token);
+            } catch (Facebook\Exceptions\FacebookSDKException $e) {
+                dd($e->getMessage());
+            }
         }
 
-        $_SESSION['fb_access_token'] = (string) $accessToken;
+        $fb->setDefaultAccessToken($token);
 
-        // User is logged in with a long-lived access token.
-        // You can redirect them to a members-only page.
-        // header('Location: https://example.com/members.php');
-        return view('baseFb');
-    }*/
+        // Save for later
+        Session::put('fb_user_access_token', (string) $token);
+
+        // Get basic info on the user from Facebook.
+        try {
+            $response = $fb->get('/me?fields=id,name,email');
+        } catch (Facebook\Exceptions\FacebookSDKException $e) {
+            dd($e->getMessage());
+        }
+
+        // Convert the response to a `Facebook/GraphNodes/GraphUser` collection
+        $facebook_user = $response->getGraphUser();
+
+        // Create the user if it does not exist or update the existing entry.
+        // This will only work if you've added the SyncableGraphNodeTrait to your User model.
+        $user = User::createOrUpdateGraphNode($facebook_user);
+
+        // Log the user into Laravel
+        Auth::login($user);
+
+        return redirect('/success')->with('message', 'Successfully logged in with Facebook');
+    }
+    public function success(){
+        return view('fbsuccess');
+    }
 }
