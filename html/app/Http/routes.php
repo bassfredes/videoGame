@@ -12,5 +12,6 @@
 */
 
 Route::get('/', 'NavidadController@index');
-Route::get('/login-facebook', 'NavidadController@index');
-Route::get('/fb-callback', 'NavidadController@fbCallback');
+Route::get('/fblogin', 'NavidadController@loginFacebook');
+Route::get('/fbcallback', 'NavidadController@fbCallback');
+Route::get('/success', 'NavidadController@success');
