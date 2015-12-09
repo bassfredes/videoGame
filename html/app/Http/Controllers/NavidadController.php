@@ -23,6 +23,41 @@ class NavidadController extends Controller{
         ->getLoginUrl('http://localhost:8080/fbcallback', ['email', 'user_events']);
         return view('fbLogin', compact('login_link'));
     }
+    public function loginFacebookJs(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb){
+        try {
+            $token = $fb->getJavaScriptHelper()->getAccessToken();
+        } catch (Facebook\Exceptions\FacebookSDKException $e) {
+            // Failed to obtain access token
+            dd($e->getMessage());
+        }
+
+        // $token will be null if no cookie was set or no OAuth data
+        // was found in the cookie's signed request data
+        if (! $token) {
+
+        }
+
+        $fb->setDefaultAccessToken($token);
+
+        // Save for later
+        //Session::put('fb_user_access_token', (string) $token);
+
+        // Get basic info on the user from Facebook.
+        try {
+            $response = $fb->get('/me?fields=id,name,email');
+        } catch (Facebook\Exceptions\FacebookSDKException $e) {
+            dd($e->getMessage());
+        }
+
+        // Convert the response to a `Facebook/GraphNodes/GraphUser` collection
+        $facebook_user = $response->getGraphUser();
+
+        // Create the user if it does not exist or update the existing entry.
+        // This will only work if you've added the SyncableGraphNodeTrait to your User model.
+        $user = User::createOrUpdateGraphNode($facebook_user);
+
+        return view('jslogin');
+    }
     public function fbCallback(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb){
         // Obtain an access token.
         try {

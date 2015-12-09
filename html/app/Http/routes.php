@@ -15,3 +15,4 @@ Route::get('/', 'NavidadController@index');
 Route::get('/fblogin', 'NavidadController@loginFacebook');
 Route::get('/fbcallback', 'NavidadController@fbCallback');
 Route::get('/success', 'NavidadController@success');
+Route::get('/js_fblogin', 'NavidadController@loginFacebookJs');
