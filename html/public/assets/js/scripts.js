@@ -6,13 +6,6 @@
 function checkLoginState() {
     FB.getLoginStatus(function(response) {
         statusChangeCallback(response);
-        $.ajax({
-            url: '/js_fblogin_callback',
-            type: 'get',
-            success: function () {
-                console.log('todo ok');
-            }
-        });
     });
 }
 
@@ -51,10 +44,17 @@ window.fbAsyncInit = function() {
 function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me?fields=name,email,birthday,devices,friends,picture', function(response) {
+        idFacebookUser = response.id;
         console.log('Successful login for: ' + response.name);
         console.log(response);
         $('#status').html('Thanks for logging in, <img src="'+response.picture.data.url+'" /> ' + response.name + '!');
-
+        $.ajax({
+            url: '/js_fblogin_callback',
+            type: 'get',
+            success: function () {
+                console.log('Conectados a FB y usuario guardado');
+            }
+        });
     });
 }
 // This is called with the results from from FB.getLoginStatus().
@@ -80,12 +80,36 @@ function statusChangeCallback(response) {
     }
 }
 
-
+var puntaje;
+var idFacebookUser;
 $(document).ready(function(){
     $('#fbLogin').click(function(){
         FB.login(function(response) {
             checkLoginState();
         }, {scope: 'public_profile,email,user_friends'});
+        return false;
+    });
+    puntaje = $('#btn_ajax').data('puntaje');
+    $('#btn_ajax').click(function(){
+        $.ajax({
+            type: 'post',
+            url: '/post_rank',
+            //dataType: 'json',
+            data: {
+                'puntaje': puntaje,
+                'idUsuario': idFacebookUser
+            },
+            headers:{
+                'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+            },
+            success: function(msg){
+                //console.log(msg.post.puntaje);
+                console.log(msg);
+            },
+            error: function(msg){
+                console.log('errores');
+            }
+        });
         return false;
     });
 });

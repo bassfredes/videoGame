@@ -17,18 +17,21 @@
     }(document, 'script', 'facebook-jssdk'));
     </script>
     <meta name="csrf_token" content="{{ csrf_token() }}" />
-    
+
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <!--fb:login-button scope="public_profile,email,user_friends" onlogin="checkLoginState();">
                 </fb:login-button-->
                 <a class="btn btn-primary" id="fbLogin">Login</a>
 
                 <div id="status">
                 </div>
+            </div>
+            <div class="col-sm-6">
+                <a id="btn_ajax" class="btn btn-primary" data-puntaje="20000">Envía el puntaje dentro de un data</a>
             </div>
         </div>
     </div>

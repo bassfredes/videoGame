@@ -17,3 +17,7 @@ Route::get('/fbcallback', 'NavidadController@fbCallback');
 Route::get('/success', 'NavidadController@success');
 Route::get('/js_fblogin', 'NavidadController@facebookjs');
 Route::get('/js_fblogin_callback', 'NavidadController@loginFacebookJs');
+
+//Ranking
+Route::get('/post_rank', 'NavidadController@postRank');
+Route::post('/post_rank', 'NavidadController@postRank');

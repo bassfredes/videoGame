@@ -14,7 +14,10 @@ use Request;
 
 
 class NavidadController extends Controller{
-    public function index(){
+    public function index(\Illuminate\Http\Request $request){
+        /*if ($request->isMethod('post')){
+            //return response()->json(['response' => 'This is post method']);
+        }*/
         return view('index');
     }
     public function loginFacebook(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb){
@@ -143,5 +146,31 @@ class NavidadController extends Controller{
     }
     public function success(){
         return view('fbsuccess');
+    }
+    public function postRank(\Illuminate\Http\Request $request){
+        if ($request->isMethod('post')){
+            $dataPostJson = $_POST;
+
+
+
+            //$actualizar_ranking = User::where('facebook_id',$dataPostJson['idUsuario'])->firstOrCreate(['puntaje' => $dataPostJson['puntaje']]);
+            $usuario = User::where('facebook_id',$dataPostJson['idUsuario'])->first();
+            if($usuario -> puntaje == null){
+                $usuario -> puntaje = $dataPostJson['puntaje'];
+                $usuario -> save();
+            }else if($usuario -> puntaje < $dataPostJson['puntaje']){
+                $usuario -> puntaje = $dataPostJson['puntaje'];
+                $usuario -> save();
+            }
+
+            $response = array(
+                'status' => 'success',
+                'msg' => 'Setting created successfully',
+                'post' => $dataPostJson,
+            );
+            return \Response::json($response);  // <<<<<<<<< see this line
+        }
+            //return view('post_rank');
+
     }
 }
