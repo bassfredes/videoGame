@@ -6,3 +6,38 @@ body {
     margin: 0;
     padding: 0;
 }
+#instrucciones {
+    display: none;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+.onlyDesktop {
+    display: block;
+}
+.onlyMobile {
+    display: none;
+}
+@media all and (max-with: 768px) {
+    .onlyDesktop {
+        display: none;
+    }
+    .onlyMobile {
+        display: block;
+    }
+}
+.fancybox-skin {
+    background: none!important;
+    border: 0px solid transparent!important;
+    -webkit-box-shadow: none!important;
+    -moz-box-shadow: none!important;
+    box-shadow: none!important;
+}
+.fancybox-overlay {
+    background: none !important;
+}
+.fancybox-close {
+    top: 18px!important;
+    right: 26px!important;
+}

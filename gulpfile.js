@@ -7,15 +7,15 @@ var gulp = require("gulp"),
 
 gulp.task('injectCss', function () {
     gulp.src('./html/resources/views/index.blade.php')
-    .pipe(inject(gulp.src('./html/public/assets/css/**/*.min.css', {read: false}), {ignorePath: "/html/public/", addRootSlash: false}))
+    .pipe(inject(gulp.src(['./html/public/assets/css/**/*.min.css', './html/public/assets/js/**/*.css'], {read: false}), {ignorePath: "/html/public/", addRootSlash: false}))
     .pipe(gulp.dest('./html/resources/views/'));
 });
 
 gulp.task('injectJs', function () {
     gulp.src('./html/resources/views/index.blade.php')
-    .pipe(inject(gulp.src('./html/public/assets/js/videoGame/**/main.min.js', {read: false}), {ignorePath: "/html/public/", addRootSlash: false}))
+    .pipe(inject(gulp.src(['./html/public/assets/js/videoGame/**/main.min.js','./html/public/assets/js/fancybox/**/*.js'], {read: false}), {ignorePath: "/html/public/", addRootSlash: false}))
     .pipe(inject(gulp.src(['./html/public/assets/js/videoGame/**/*.js','!./html/public/assets/js/videoGame/**/main.min.js'], {read: false}), {name: 'game', ignorePath: "/html/public/", addRootSlash: false}))
-    .pipe(inject(gulp.src(['./html/public/assets/js/*/**/*.js','./html/public/assets/js/**/*.js','!./html/public/assets/js/videoGame/dist/*.js'], {read: false}), {name: 'head', ignorePath: "/html/public/", addRootSlash: false}))
+    .pipe(inject(gulp.src(['./html/public/assets/js/*/**/*.js','./html/public/assets/js/**/*.js','!./html/public/assets/js/videoGame/dist/*.js','!./html/public/assets/js/fancybox/**/*.js'], {read: false}), {name: 'head', ignorePath: "/html/public/", addRootSlash: false}))
     .pipe(gulp.dest('./html/resources/views/'));
 });
 

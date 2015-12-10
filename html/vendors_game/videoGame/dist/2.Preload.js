@@ -49,6 +49,8 @@ regaloNavidad.Preload.prototype = {
         this.load.image('backgroundTiles', 'assets/images/backgroundGame.png');
         this.load.image('hud_top', 'assets/images/hud_top.png');
         this.load.image('hud_mitocondria', 'assets/images/hud_mitocondria.png');
+        this.load.image('hud_mitoCoin', 'assets/images/moneda_paracontador.png');
+        this.load.image('hud_backgroundTrama', 'assets/images/backgroundTrama.png');
         this.load.image('build_01', 'assets/images/build_01.png');
         this.load.image('build_02', 'assets/images/build_02.png');
         this.load.image('build_03', 'assets/images/build_03.png');
@@ -66,22 +68,26 @@ regaloNavidad.Preload.prototype = {
         this.load.spritesheet('life_001', 'assets/images/life_001.png',290,70,4);
         this.load.spritesheet('life_002', 'assets/images/life_002.png',290,70,2);
         this.load.spritesheet('hud_enemigos', 'assets/images/hud_enemigos.png',240,200,6);
+        this.load.spritesheet('hud_star', 'assets/images/hudStar.png',275,48,6);
+        this.load.spritesheet('mitoCoin', 'assets/images/mitoCoin.png',50,50,7);
+        this.load.spritesheet('starCoin', 'assets/images/starCoin.png',80,80,6);
         this.load.spritesheet('player_jump', 'assets/images/player_jump.png',130,130,7);
         this.load.spritesheet('player_dmg', 'assets/images/player_dmg.png',130,130,6);
 
         this.load.image('backgroundLoser', 'assets/images/backgroundLoser.jpg');
+        this.load.image('backgroundWinner', 'assets/images/backgroundWinner.jpg');
 
         this.game.load.start();
     },
     loadStart: function() {
-        console.log("Loading ...");
+        //console.log("Loading ...");
     },
     fileComplete: function(progress, cacheKey, success, totalLoaded, totalFiles) {
         loadingText.setText("Cargando... " + progress + "%");
         preloadBar.animations.frame = Math.round(progress/10);
     },
     loadComplete: function() {
-        console.log("completo");
+        //console.log("completo");
         gameVar.stateTransition.to('PreGame');
     }
 };

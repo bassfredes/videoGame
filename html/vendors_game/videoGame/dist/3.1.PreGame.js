@@ -13,6 +13,7 @@ regaloNavidad.PreGame.prototype = {
 
         this.startBounceComenzarJuego();
         stadoSiguiente = this.state;
+
     },
     update: function() {
     },

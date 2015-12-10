@@ -2,8 +2,15 @@ var regaloNavidad = regaloNavidad || {};
 //Seteo algunas variables generales
 var stadoSiguiente;
 var vidas = 5;
+var estrellas = 0;
+var estrellasSeguidas = 0;
+var vidasRelEstrellas = 0;
 var puntaje = 0;
+var puntajeText = 0;
+var puntajeMitoCoin = 0;
+var puntajeMitoCoinText = 0;
 var tiempo = 0;
+var tiempoEstrella = 0;
 var saltando = false;
 //Debo Setear 3 tipos de able para saltar debido a los distintos Inputs existentes /Swipe-Touch-Keyboard
 var ableToSaltar1 = true;
@@ -16,6 +23,12 @@ var playerAfectable = true;
 var inmuneActive = false;
 var timerInmune = 0;
 var corriendoSobreObjeto = false;
+var anchoActivoWorld;
+var posiblesPosMatriz = {};
+var numberOfObject;
+var posPlayerX = 0;
+var muestroInstrucciones = false;
+var gameVar;
 
 regaloNavidad.Game = function() {};
 regaloNavidad.Game.prototype = {
@@ -23,9 +36,15 @@ regaloNavidad.Game.prototype = {
         this.game.time.advancedTiming = true;
     },
     create: function() {
+        gameVar = this.game;
         stadoSiguiente = this.state;
+        this.wraps = 0;
         //Configuro el mundo y sus limites
         this.game.world.setBounds(0, 0, 8000, this.game.height);
+
+
+        //Guardo Ancho Activo del Mapa
+        anchoActivoWorld = this.game.world.width - this.game.width - 900;
 
         //Sigo con los eficios de Fondo
         this.baseBackground = this.game.add.sprite(0, 0, 'backgroundBase');
@@ -47,13 +66,15 @@ regaloNavidad.Game.prototype = {
         this.game.input.touch.touchStartCallback = this.onTouchDown;
         this.game.input.touch.touchEndCallback = this.onTouchUp;
 
-        //Genero elementos - Builds
+        //Genero elementos - Builds - Estrellas y mitoCoin
         this.generateBuilds();
 
         this.generateObjects();
 
+        this.generateEstrellaCoin();
+
         //Creo al Personaje
-        this.player = this.game.add.sprite(100, 400, 'player');
+        this.player = this.game.add.sprite(300, 400, 'player');
         this.player.animations.add('run');
 
         //Genero HUD
@@ -63,10 +84,18 @@ regaloNavidad.Game.prototype = {
         this.hud_mitocondria = this.game.add.sprite(this.game.width - 45, this.game.height - 35, 'hud_mitocondria');
         this.hud_mitocondria.alpha = 0.6
         HUDGame.add(this.hud_mitocondria);
+        this.hudMitoCoin = this.game.add.sprite(25, 115, 'hud_mitoCoin');
+        HUDGame.add(this.hudMitoCoin);
         this.hud_enemigos = this.game.add.sprite(0, 400, 'hud_enemigos');
         this.hud_enemigos.animations.add('running');
         this.hud_enemigos.animations.play('running', 15, true);
         HUDGame.add(this.hud_enemigos);
+        this.hud_backgroundTrama = this.game.add.sprite(this.game.width - 240, 50, 'hud_backgroundTrama');
+        this.hud_backgroundTrama.scale.x = 0.8;
+        HUDGame.add(this.hud_backgroundTrama);
+        this.hud_star = this.game.add.sprite(25, 50, 'hud_star');
+        this.hud_star.frame = 0;
+        HUDGame.add(this.hud_star);
         this.hud_Life01 = this.game.add.sprite(10, this.game.height-70, 'life_001');
         this.hud_Life01.frame = 3;
         HUDGame.add(this.hud_Life01);
@@ -74,16 +103,29 @@ regaloNavidad.Game.prototype = {
         HUDGame.body = null;
         HUDGame.fixedToCamera = true;
 
+        puntajeMitoCoinText = this.game.add.text(70, 115, '', { fill: '#FAD417'});
+        puntajeMitoCoinText.font = "Lobster";
+        puntajeMitoCoinText.fontSize = 28;
+        puntajeMitoCoinText.setText(" = " + 0);
+        HUDGame.add(puntajeMitoCoinText);
+
+
+        puntajeText = this.game.add.text(this.game.width - 230, 55, '', { fill: '#FAD417'});
+        puntajeText.font = "Lobster";
+        puntajeText.fontSize = 28;
+        puntajeText.setText("Puntaje = " + 0);
+        HUDGame.add(puntajeText);
+
         //Creo al piso Invisible para detectar colisiones
         this.ground = this.game.add.sprite(0, 585);
         this.ground.scale.x = this.game.world.width;
 
         //Activo physics en el Player, Ground y Enemy
-        this.game.physics.enable([this.player, this.ground, this.objects], Phaser.Physics.ARCADE);
+        this.game.physics.enable([this.player, this.ground, this.objects, this.estrellaCoin], Phaser.Physics.ARCADE);
 
         //Player gravity
         this.player.body.gravity.y = 1800;
-        this.player.body.setSize(this.player.width - 30, this.player.height);
+        this.player.body.setSize(this.player.width - 60, this.player.height);
 
         //Hago inmovible el Ground y que no le afecte la Gravedad
         this.ground.body.immovable = true;
@@ -106,10 +148,27 @@ regaloNavidad.Game.prototype = {
 
         this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTime, this);
         this.game.time.events.loop(Phaser.Timer.SECOND*0.4, this.updateInmune, this);
+        muestroInstrucciones = true;
+        $(window).on('fancyboxClosed', function(){
+            this.stopped = false;
+            gameVar.paused = false;
+        });
     },
     update: function() {
+        if(timerInmune > 0 && muestroInstrucciones){
+            //Muestro las instrucciones
+            this.stopped = true;
+            this.game.paused = true;
+            muestroInstrucciones = false;
+            $.fancybox.open('#instrucciones');
+        }
+        posPlayerX = this.player.x;
         //Detecto colision con el piso
         this.game.physics.arcade.collide(this.player, this.ground, this.playerOnGround, null, this);
+        //Detecto colision por parte de estrella
+        this.game.physics.arcade.collide(this.estrellaCoin, this.ground, null, null, this);
+        this.game.physics.arcade.collide(this.estrellaCoin, this.objects, null, null, this);
+        this.game.physics.arcade.collide(this.player, this.estrellaCoin, this.playerHitsEstrellaCoin, null, this);
         if (!inmuneActive) {
             this.game.physics.arcade.collide(this.player, this.objects, this.playerHit, null, this);
         }
@@ -124,8 +183,10 @@ regaloNavidad.Game.prototype = {
                 this.wraps++;
                 this.builds.destroy();
                 this.generateBuilds();
-                //this.objects.destroy();
+                this.objects.destroy();
                 this.generateObjects();
+                this.estrellaCoin.destroy();
+                this.generateEstrellaCoin();
                 //Le doy orden al espacio
                 this.ordenWorld();
             } else if (this.player.x >= this.game.width) {
@@ -157,11 +218,14 @@ regaloNavidad.Game.prototype = {
             else {
                 this.player.body.velocity.x = 500;
             }
+            if(tiempoEstrella > 5){
+                this.generateEstrellaCoin();
+                tiempoEstrella = 0;
+            }
             //Detectamos cuando el player sobrepase los limites permitidos (esto se hace calculando la posicion del usuario y si sobrepasa esa posicion)
             this.game.world.wrap(this.player, -(this.game.width / 2) - 190, false, true, false);
             //Asigno que la camara siga al personaje con un offset
             this.game.camera.x = this.player.x - 320;
-
         }
     },
     actualizarEstados: function(datoToActualizar) {
@@ -186,74 +250,93 @@ regaloNavidad.Game.prototype = {
                 }
                 this.game.add.tween(this.hud_enemigos).to( { x: '+50' }, 2000, Phaser.Easing.Linear.None, true);
             break;
+            case 'puntajeMitoCoin':
+                puntajeMitoCoin++;
+                if(puntajeMitoCoin < 10){
+                    puntajeMitoCoin = "0"+puntajeMitoCoin;
+                }
+                puntajeMitoCoinText.setText(" = " + puntajeMitoCoin);
+            break;
+            case 'puntajeEstrellaCoin':
+                estrellas++;
+                if(estrellas>4){
+                    this.game.stateTransition.to('PostGame_winner');
+                }
+                else {
+                    this.hud_star.frame = estrellas;
+                }
+            break;
         }
     },
-    generateObjects: function() {
+    generateObjects: function(reason) {
+        this.posiblesPosiciones = anchoActivoWorld/200;
+        this.posiblesPosiciones = Math.floor(this.posiblesPosiciones);
+        this.posiblesPosicionesReduced = Math.floor(this.posiblesPosiciones)-4;
+        this.anchoPosiciones = anchoActivoWorld/this.posiblesPosiciones;
         //Genero objetos
         this.objects = this.game.add.group();
         //Activo las physics en ellos
         this.objects.enableBody = true;
-        var enemy;
-        var numberOfEnemy;
-        var numEnemy = this.game.rnd.integerInRange(5, 10);
-        for (var i = 0; i < numEnemy; i++) {
-            //Se agrega el Sprite dentro del area permitida del World
-            //de esta forma no desapareceran si se alcanza el limite y vuelve al comienzo /o Apareceran de la nada
-            numberOfEnemy = this.game.rnd.integerInRange(1, 7);
-            switch(numberOfEnemy){
+        for (o = 0; o <= this.posiblesPosiciones; o++){
+            posiblesPosMatriz[o] = { espacioID:o, estado: false, objectNumber: 0};
+        }
+        var numRandomObj = this.game.rnd.integerInRange(5, 10);
+        //Se agrega el Sprite dentro del area permitida del World
+        //de esta forma no desapareceran si se alcanza el limite y vuelve al comienzo no Apareceran de la nada
+        for (var i = 0; i < numRandomObj; i++) {
+            numberOfObject = this.game.rnd.integerInRange(1, 7);
+            numberOfObject = 5;
+            switch(numberOfObject){
                 case 1:
-                    this.tryNotOverlap(485, numberOfEnemy, numEnemy);
+                    this.tryNotOverlap(485, numberOfObject, numRandomObj, "obj_0");
                 break;
                 case 2:
-                    this.tryNotOverlap(540, numberOfEnemy, numEnemy);
+                    this.tryNotOverlap(540, numberOfObject, numRandomObj, "obj_0");
                 break;
                 case 3:
-                    this.tryNotOverlap(500, numberOfEnemy, numEnemy);
+                    this.tryNotOverlap(500, numberOfObject, numRandomObj, "obj_0");
                 break;
                 case 4:
-                    this.tryNotOverlap(493, numberOfEnemy, numEnemy);
+                    this.tryNotOverlap(493, numberOfObject, numRandomObj, "obj_0");
                 break;
                 case 5:
-                    this.tryNotOverlap(450, numberOfEnemy, numEnemy);
+                    this.tryNotOverlap(450, numberOfObject, numRandomObj, "obj_0");
                 break;
                 case 6:
-                    this.tryNotOverlap(470, numberOfEnemy, numEnemy);
+                    this.tryNotOverlap(470, numberOfObject, numRandomObj, "obj_0");
                 break;
                 case 7:
-                    this.tryNotOverlap(465, numberOfEnemy, numEnemy);
+                    this.tryNotOverlap(465, numberOfObject, numRandomObj, "obj_0");
                 break;
             }
         }
     },
-    tryNotOverlap: function(posY, enemyNumber, numObjectosTotales) {
-        var x = this.game.rnd.integerInRange(this.game.width + 300, this.game.world.width - this.game.width - 900);
-        enemy = this.objects.create(x, posY, 'obj_0'+enemyNumber);
-        var len = this.objects.children.length;
-        if(numObjectosTotales == len){
-            var posiblesErrores = 0;
-            for (var i = 0; i < len; i++) {
-                posiblesErrores = 0;
-                for(var todosLosObjetos = 0; todosLosObjetos < len; todosLosObjetos++){
-                    if(todosLosObjetos != i){
-                        while(this.game.physics.arcade.overlap(this.objects.children[i],this.objects.children[todosLosObjetos])) {
-                            if(posiblesErrores > 3){
-                                break;
-                                this.objects.children[i].destroy();
-                            }
-                            else {
-                                x = this.game.rnd.integerInRange(this.game.width + 300, this.game.world.width - this.game.width - 900);
-                                posiblesErrores++;
-                                this.objects.children[i].body.x = x;
-                            }
-                        }
-                    }
-                }
+    tryNotOverlap: function(posY, objectNumber, numObjectosTotales, preObject) {
+        var x = this.game.rnd.integerInRange(this.game.width + 300, anchoActivoWorld);
+        this.posXMatriz = this.game.rnd.integerInRange(1, this.posiblesPosicionesReduced);
+        var maxIntentos = 0;
+        posiblesPosMatriz[this.posXMatriz]["objectNumber"] = objectNumber;
+        if(preObject == "obj_0"){
+            while(posiblesPosMatriz[this.posXMatriz]["estado"] == true && maxIntentos < 4 || posiblesPosMatriz[this.posXMatriz-1]["objectNumber"] == 5 && maxIntentos < 4){
+                this.posXMatriz = this.game.rnd.integerInRange(1, this.posiblesPosicionesReduced);
+                maxIntentos++;
             }
         }
-        //enemy.body.x = x;
-        //Enemy immovable
-        enemy.body.immovable = true;
-        enemy.body.allowGravity = false;
+        else {
+            while(posiblesPosMatriz[this.posXMatriz]["estado"] == true && maxIntentos < 4){
+                this.posXMatriz = this.game.rnd.integerInRange(1, this.posiblesPosicionesReduced);
+                maxIntentos++;
+            }
+        }
+        posiblesPosMatriz[this.posXMatriz]["estado"] = true;
+        if(objectNumber == 5){
+            posiblesPosMatriz[this.posXMatriz+1]["estado"] = true;
+        }
+        if(maxIntentos < 4){
+            object = this.objects.create(this.posXMatriz*this.anchoPosiciones+this.game.width + 300, posY, preObject+objectNumber);
+            object.body.immovable = true;
+            object.body.allowGravity = false;
+        }
     },
     generateBuilds: function() {
         this.builds = this.game.add.group();
@@ -264,8 +347,22 @@ regaloNavidad.Game.prototype = {
         var numBuilds = 1;
         var builds;
         for (var i = 1; i <= numBuilds; i++) {
-            var x = this.game.rnd.integerInRange(this.game.width + 300, this.game.world.width - this.game.width - 900);
+            var x = this.game.rnd.integerInRange(this.game.width + 300, anchoActivoWorld);
             builds = this.builds.create(x, 0, 'build_0' + numberOfBuild);
+        }
+    },
+    generateEstrellaCoin: function() {
+        this.estrellaCoin = this.game.add.group();
+        //Activo las physics en ellos
+        this.estrellaCoin.enableBody = true;
+        if (posPlayerX < 6000) {
+            var x = posPlayerX+800;
+            var randomY = this.game.rnd.integerInRange(100, 400);
+            estrella = this.estrellaCoin.create(x, randomY, 'starCoin');
+            estrella.animations.add('girando');
+            estrella.animations.play('girando', 8, true);
+            estrella.body.bounce.y = 0.8;
+            estrella.body.gravity.y = 600;
         }
     },
     onTouchDown: function(event) {
@@ -312,6 +409,7 @@ regaloNavidad.Game.prototype = {
         this.game.world.bringToTop(this.ground);
         this.game.world.bringToTop(this.builds);
         this.game.world.bringToTop(this.objects);
+        this.game.world.bringToTop(this.estrellaCoin);
         this.game.world.bringToTop(this.player);
         this.game.world.bringToTop(HUDGame);
     },
@@ -320,6 +418,7 @@ regaloNavidad.Game.prototype = {
     },
     updateTime: function() {
         tiempo++;
+        tiempoEstrella++;
     },
     playerOnGround: function() {
         //Asigno animacion al personaje para hacer la transicion -> Le digo que si no se encontraba en el piso cambie la animacion a correr nuevamente
@@ -335,8 +434,12 @@ regaloNavidad.Game.prototype = {
         saltando = false;
         corriendoSobreObjeto = false;
     },
+    playerHitsEstrellaCoin: function() {
+        this.estrellaCoin.destroy();
+        this.actualizarEstados("puntajeEstrellaCoin");
+    },
     playerHit: function() {
-        if (playerAfectable && this.player.body.touching.right) {
+        if (playerAfectable && this.player.body.touching.right && !corriendoSobreObjeto) {
             inmuneActive = true;
             timerInmune = 0;
             // Inicia Danio
@@ -360,10 +463,11 @@ regaloNavidad.Game.prototype = {
         this.actualizarEstados("vida");
     },
     render: function() {
-        this.game.debug.inputInfo(32, 38);
-        this.game.debug.text(this.game.time.fps || '--', 890, 50, "#FFF", "40px Courier");
+        //this.game.debug.inputInfo(32, 38);
+        //this.game.debug.text(this.game.time.fps || '--', 890, 50, "#FFF", "40px Courier");
         //this.game.debug.text('jump:' + saltando, 32, 20);
         //this.game.debug.body(this.player);
+        //this.game.debug.spriteBounds(this.player);
         //this.game.debug.spriteBounds(this.objects);
     }
 };

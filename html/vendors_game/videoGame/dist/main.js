@@ -7,3 +7,33 @@ regaloNavidad.game.state.add('Game', regaloNavidad.Game);
 regaloNavidad.game.state.add('PostGame_winner', regaloNavidad.PostGame_winner);
 regaloNavidad.game.state.add('PostGame_loser', regaloNavidad.PostGame_loser);
 regaloNavidad.game.state.start('Boot');
+$(document).ready(function() {
+    $(".lightbox").fancybox({
+        maxWidth: 677,
+        maxHeight: 407,
+        fitToView: false,
+        padding: 0,
+        margin: 0,
+        width: '95%',
+        height: '95%',
+        autoSize: false,
+        closeClick: false,
+        openEffect: 'none',
+        closeEffect: 'none',
+        closeClick  : false,
+        helpers     : {
+            overlay : {closeClick: false}
+        }
+    });
+    $(".fancybox-close").click(function(){
+        FancyBoxClosed();
+    });
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) {
+            FancyBoxClosed();
+        }
+    });
+    function FancyBoxClosed() {
+        $(window).trigger('fancyboxClosed');
+    }
+});
