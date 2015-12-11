@@ -1,4 +1,4 @@
-
+/*
 
 // This function is called when someone finishes with the Login
 // Button.  See the onlogin handler attached to it in the sample
@@ -113,3 +113,4 @@ $(document).ready(function(){
         return false;
     });
 });
+*/

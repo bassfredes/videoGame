@@ -16,8 +16,8 @@
 	<!-- endinject -->
 	<!-- !JS -->
 	<!-- head:js -->
-	<script src="assets/js/jquery/dist/jquery.min.js"></script>
 	<script src="assets/js/gameController/dist/gamecontroller.min.js"></script>
+	<script src="assets/js/jquery/dist/jquery.min.js"></script>
 	<script src="assets/js/phaser/build/phaser.min.js"></script>
 	<script src="assets/js/state-transition/dist/phaser-state-transition-plugin.min.js"></script>
 	<script src="assets/js/scripts.js"></script>
@@ -31,6 +31,26 @@
 	<script src="assets/js/videoGame/dist/3.3.PostGame.loser.min.js"></script>
 	<script src="assets/js/videoGame/dist/3.3.PostGame.winner.min.js"></script>
 	<!-- endinject -->
+	<script>
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+	window.fbAsyncInit = function() {
+	    FB.init({
+	        appId      : '1644249609162562',
+	        cookie     : true,  // enable cookies to allow the server to access
+	        // the session
+	        xfbml      : true,  // parse social plugins on this page
+	        version    : 'v2.5' // use version 2.2
+	    });
+	};
+    </script>
+    <meta name="csrf_token" content="{{ csrf_token() }}" />
 </head>
 
 <body>

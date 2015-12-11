@@ -20,7 +20,9 @@ regaloNavidad.Connection.prototype = {
     clickOnbtnSalir: function() {
     },
     clickOnbtnConectarse: function() {
-        stadoSiguiente.start('Game');
+        FB.login(function(response) {
+            checkLoginState();
+        }, {scope: 'public_profile,email,user_friends'});
     },
     startBounceConnection: function() {
         this.btnConectarse.x = this.game.world.width+this.btnConectarse.width;
@@ -36,3 +38,28 @@ regaloNavidad.Connection.prototype = {
 
     }
 };
+
+function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+    });
+}
+function statusChangeCallback(response) {
+    if (response.status === 'connected') {
+        // Logged into your app and Facebook.
+        FB.api('/me?fields=name,email,birthday,devices,friends,picture', function(response) {
+            idFacebookUser = response.id;
+            console.log('Successful login for: ' + response.name);
+            console.log(response);
+            //$('#status').html('Thanks for logging in, <img src="'+response.picture.data.url+'" /> ' + response.name + '!');
+            $.ajax({
+                url: '/js_fblogin_callback',
+                type: 'get',
+                success: function () {
+                    console.log('Conectados a FB y usuario guardado');
+                }
+            });
+        });
+        stadoSiguiente.start('Game');
+    }
+}
