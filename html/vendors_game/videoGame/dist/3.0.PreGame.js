@@ -23,6 +23,7 @@ regaloNavidad.PreGame.prototype = {
     clickOnbtnCompartir: function() {
     },
     clickOnbtnRanking: function() {
+        stadoSiguiente.start('Ranking');
     },
     clickOnbtnComenzar: function() {
         stadoSiguiente.start('Connection');

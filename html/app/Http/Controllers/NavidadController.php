@@ -173,4 +173,8 @@ class NavidadController extends Controller{
             //return view('post_rank');
 
     }
+    public function getRanking(){
+        $usuarios = User::all();
+        return \Response::json($usuarios);
+    }
 }
