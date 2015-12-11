@@ -59,10 +59,6 @@
 		<div class="header"></div>
 		<!-- /header -->
 		<div class="main"></div>
-		<div id="instrucciones" class="lightbox">
-			<img src="assets/images/instruccionesDesktop.png" alt="Instrucciones Desktop" class="img-responsive onlyDesktop" />
-			<img src="assets/images/instruccionesDesktop.png" alt="Instrucciones Desktop" class="img-responsive onlyMobile" />
-		</div>
 		<!-- /main -->
 		<div class="footer"></div>
 		<!-- /footer -->
