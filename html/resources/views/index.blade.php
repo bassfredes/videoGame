@@ -13,8 +13,6 @@
 	<link rel="stylesheet" href="assets/css/reset.min.css">
 	<link rel="stylesheet" href="assets/css/style.min.css">
 	<link rel="stylesheet" href="assets/js/fancybox/jquery.fancybox.css">
-	<link rel="stylesheet" href="assets/js/fancybox/helpers/jquery.fancybox-buttons.css">
-	<link rel="stylesheet" href="assets/js/fancybox/helpers/jquery.fancybox-thumbs.css">
 	<!-- endinject -->
 	<!-- !JS -->
 	<!-- head:js -->
@@ -22,22 +20,16 @@
 	<script src="assets/js/jquery/dist/jquery.min.js"></script>
 	<script src="assets/js/phaser/build/phaser.min.js"></script>
 	<script src="assets/js/state-transition/dist/phaser-state-transition-plugin.min.js"></script>
+	<script src="assets/js/scripts.js"></script>
 	<!-- endinject -->
 	<script src="../vendors_game/videoGame/dist/1.Boot.js"></script>
 	<script src="../vendors_game/videoGame/dist/2.Preload.js"></script>
-	<script src="../vendors_game/videoGame/dist/3.1.PreGame.js"></script>
+	<script src="../vendors_game/videoGame/dist/3.0.PreGame.js"></script>
+	<script src="../vendors_game/videoGame/dist/3.1.Connect.js"></script>
 	<script src="../vendors_game/videoGame/dist/3.2.Game.js"></script>
 	<script src="../vendors_game/videoGame/dist/3.3.PostGame.loser.js"></script>
 	<script src="../vendors_game/videoGame/dist/3.3.PostGame.winner.js"></script>
 	<!-- game:js -->
-	<!--
-	<script src="assets/js/videoGame/dist/1.Boot.min.js"></script>
-	<script src="assets/js/videoGame/dist/2.Preload.min.js"></script>
-	<script src="assets/js/videoGame/dist/3.1.PreGame.min.js"></script>
-	<script src="assets/js/videoGame/dist/3.2.Game.min.js"></script>
-	<script src="assets/js/videoGame/dist/3.3.PostGame.loser.min.js"></script>
-	<script src="assets/js/videoGame/dist/3.3.PostGame.winner.min.js"></script>
-	-->
 	<!-- endinject -->
 </head>
 
@@ -58,11 +50,7 @@
 	<!-- !Javascript - for fast page loading -->
 	<!-- inject:js -->
 	<script src="assets/js/videoGame/dist/main.min.js"></script>
-	<script src="assets/js/fancybox/jquery.fancybox.js"></script>
 	<script src="assets/js/fancybox/jquery.fancybox.pack.js"></script>
-	<script src="assets/js/fancybox/helpers/jquery.fancybox-buttons.js"></script>
-	<script src="assets/js/fancybox/helpers/jquery.fancybox-media.js"></script>
-	<script src="assets/js/fancybox/helpers/jquery.fancybox-thumbs.js"></script>
 	<!-- endinject -->
 </body>
 
