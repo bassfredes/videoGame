@@ -53,6 +53,7 @@ regaloNavidad.Preload.prototype = {
         this.load.image('hud_mitocondria', 'assets/images/hud_mitocondria.png');
         this.load.image('hud_mitoCoin', 'assets/images/moneda_paracontador.png');
         this.load.image('hud_backgroundTrama', 'assets/images/backgroundTrama.png');
+        this.load.image('fondo_ranking', 'assets/images/fondo_ranking.jpg');
         this.load.image('build_01', 'assets/images/build_01.png');
         this.load.image('build_02', 'assets/images/build_02.png');
         this.load.image('build_03', 'assets/images/build_03.png');
@@ -77,7 +78,7 @@ regaloNavidad.Preload.prototype = {
         this.load.spritesheet('player_dmg', 'assets/images/player_dmg.png',130,130,6);
 
         this.game.load.json('rankingData', 'get_ranking');
-        
+
         this.load.image('backgroundLoser', 'assets/images/backgroundLoser.jpg');
         this.load.image('backgroundWinner', 'assets/images/backgroundWinner.jpg');
 

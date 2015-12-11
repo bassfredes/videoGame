@@ -9,6 +9,7 @@ use Session;
 use App\User;
 use Auth;
 use Request;
+use DB;
 
 
 
@@ -174,7 +175,7 @@ class NavidadController extends Controller{
 
     }
     public function getRanking(){
-        $usuarios = User::all();
+        $usuarios = User::orderBy('puntaje','desc')->take(10)->get();
         return \Response::json($usuarios);
     }
 }
