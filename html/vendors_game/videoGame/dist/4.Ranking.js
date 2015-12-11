@@ -5,11 +5,12 @@ var phaserRankingJSON;
 regaloNavidad.Ranking = function() {};
 regaloNavidad.Ranking.prototype = {
     preload: function() {
-        this.game.load.json('rankingData', '/get_ranking');
+
     },
-    create: function() {    
+    create: function() {
+        this.backgroundComenzar = this.game.add.sprite(0, 0, 'backgroundComenzar');
         phaserRankingJSON = this.game.cache.getJSON('rankingData');
-        stadoSiguiente = this.state;
+        console.log(phaserRankingJSON);
     },
     update: function() {
     },

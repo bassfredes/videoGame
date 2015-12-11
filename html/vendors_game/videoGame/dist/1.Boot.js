@@ -6,6 +6,8 @@ regaloNavidad.Boot.prototype = {
         //Assets que se usaran en la Carga
         this.load.spritesheet('preloadbar', 'assets/images/preloader-bar.png',336,30,11);
         this.load.spritesheet('player', 'assets/images/player_run.png',130,130,8);
+        //  Load the Google WebFont Loader script
+        this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     },
     create: function() {
         //Backgroundcolor para el Loader

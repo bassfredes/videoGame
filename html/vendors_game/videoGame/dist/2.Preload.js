@@ -15,8 +15,6 @@ WebFontConfig = {
 regaloNavidad.Preload = function() {};
 regaloNavidad.Preload.prototype = {
     preload: function() {
-        //  Load the Google WebFont Loader script
-        this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
         //Muestro el Loader
         preloadBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'preloadbar');
         preloadBar.animations.add('loadingBar');
@@ -78,6 +76,8 @@ regaloNavidad.Preload.prototype = {
         this.load.spritesheet('player_jump', 'assets/images/player_jump.png',130,130,7);
         this.load.spritesheet('player_dmg', 'assets/images/player_dmg.png',130,130,6);
 
+        this.game.load.json('rankingData', 'get_ranking');
+        
         this.load.image('backgroundLoser', 'assets/images/backgroundLoser.jpg');
         this.load.image('backgroundWinner', 'assets/images/backgroundWinner.jpg');
 

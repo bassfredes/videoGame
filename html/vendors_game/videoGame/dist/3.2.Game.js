@@ -6,9 +6,9 @@ var estrellas = 0;
 var estrellasSeguidas = 0;
 var vidasRelEstrellas = 0;
 var puntaje = 0;
-var puntajeText = 0;
+var puntajeText = "";
 var puntajeMitoCoin = 0;
-var puntajeMitoCoinText = 0;
+var puntajeMitoCoinText = "";
 var tiempo = 0;
 var tiempoEstrella = 0;
 var saltando = false;
@@ -32,6 +32,7 @@ var gamePaused = false;
 var instruccionesSprite;
 var thisGame;
 var generatedStars = 0;
+var bonusPts = 1;
 
 regaloNavidad.Game = function() {};
 regaloNavidad.Game.prototype = {
@@ -141,7 +142,7 @@ regaloNavidad.Game.prototype = {
         this.ground.body.immovable = true;
         this.ground.body.allowGravity = false;
 
-        //Hago que la camara siga al Player - Desactivado ya que utilizo otra forma - no la nativa a Phaser (Ver si en algun futuro se puede utilizar con offset - Mejor rendimiento de esta forma)
+        //Hago que la camara siga al Player - Desactivado ya que utilizo otra forma - no la nativa de Phaser (Ver si en algun futuro se puede utilizar con offset - Mejor rendimiento de esta forma)
         //this.game.camera.follow(this.player);
 
         //Reproduzco la animacion de Correr ( 'key', frameRate, loop )
@@ -237,8 +238,8 @@ regaloNavidad.Game.prototype = {
             //Muestro las instrucciones
             var mostrarInstruccionesActivo = regaloNavidad.game.add.tween(instruccionesSprite).to({alpha: 1},100, "Linear", true);
             mostrarInstruccionesActivo.start();
-            mostrarInstruccionesActivo.onComplete.add(this.pauseGame, this);
             muestroInstrucciones = false;
+            mostrarInstruccionesActivo.onComplete.add(this.pauseGame, this);
         }
     },
     pauseGame: function() {
@@ -259,6 +260,7 @@ regaloNavidad.Game.prototype = {
             case 'vida':
                 if(vidas > 1){
                     vidas--;
+                    //bonusPts = 1;
                 }
                 else {
                     this.player.alive = false;
@@ -278,6 +280,7 @@ regaloNavidad.Game.prototype = {
             break;
             case 'puntajeMitoCoin':
                 puntajeMitoCoin++;
+                puntaje += 1000;
                 if(puntajeMitoCoin < 10){
                     puntajeMitoCoin = "0"+puntajeMitoCoin;
                 }
@@ -285,14 +288,17 @@ regaloNavidad.Game.prototype = {
             break;
             case 'puntajeEstrellaCoin':
                 estrellas++;
+                puntaje += 10000*bonusPts;
                 if(estrellas>4){
                     this.game.stateTransition.to('PostGame_winner');
                 }
                 else {
                     this.hud_star.frame = estrellas;
                 }
+                bonusPts*2;
             break;
         }
+        puntajeText.setText("Puntaje = " + puntaje);
     },
     generateObjects: function(reason) {
         this.posiblesPosiciones = anchoActivoWorld/200;
