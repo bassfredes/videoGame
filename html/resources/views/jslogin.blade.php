@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <a id="btn_ajax" class="btn btn-primary" data-puntaje="20000">Envía el puntaje dentro de un data</a>
+                <a id="btn_ajax" class="btn btn-primary" data-puntaje="100">Envía el puntaje dentro de un data</a>
             </div>
         </div>
     </div>

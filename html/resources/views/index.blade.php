@@ -18,10 +18,11 @@
 	<!-- endinject -->
 	<!-- !JS -->
 	<!-- head:js -->
+	<script src="assets/js/phaser/build/phaser.min.js"></script>
 	<script src="assets/js/gameController/dist/gamecontroller.min.js"></script>
 	<script src="assets/js/jquery/dist/jquery.min.js"></script>
-	<script src="assets/js/phaser/build/phaser.min.js"></script>
 	<script src="assets/js/state-transition/dist/phaser-state-transition-plugin.min.js"></script>
+	<script src="assets/js/scripts.js"></script>
 	<!-- endinject -->
 	<script src="../vendors_game/videoGame/dist/1.Boot.js"></script>
 	<script src="../vendors_game/videoGame/dist/2.Preload.js"></script>
@@ -30,14 +31,12 @@
 	<script src="../vendors_game/videoGame/dist/3.3.PostGame.loser.js"></script>
 	<script src="../vendors_game/videoGame/dist/3.3.PostGame.winner.js"></script>
 	<!-- game:js -->
-	<!--
 	<script src="assets/js/videoGame/dist/1.Boot.min.js"></script>
 	<script src="assets/js/videoGame/dist/2.Preload.min.js"></script>
 	<script src="assets/js/videoGame/dist/3.1.PreGame.min.js"></script>
 	<script src="assets/js/videoGame/dist/3.2.Game.min.js"></script>
 	<script src="assets/js/videoGame/dist/3.3.PostGame.loser.min.js"></script>
 	<script src="assets/js/videoGame/dist/3.3.PostGame.winner.min.js"></script>
-	-->
 	<!-- endinject -->
 </head>
 
