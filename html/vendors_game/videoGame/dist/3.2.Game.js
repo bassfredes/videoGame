@@ -28,6 +28,10 @@ var posiblesPosMatriz = {};
 var numberOfObject;
 var posPlayerX = 0;
 var muestroInstrucciones = false;
+var gamePaused = false;
+var instruccionesSprite;
+var thisGame;
+var generatedStars = 0;
 
 regaloNavidad.Game = function() {};
 regaloNavidad.Game.prototype = {
@@ -36,6 +40,7 @@ regaloNavidad.Game.prototype = {
     },
     create: function() {
         stadoSiguiente = this.state;
+        thisGame = this.game;
         this.wraps = 0;
         //Configuro el mundo y sus limites
         this.game.world.setBounds(0, 0, 8000, this.game.height);
@@ -73,6 +78,7 @@ regaloNavidad.Game.prototype = {
 
         //Creo Instrucciones
         this.instrucciones = this.game.add.sprite(this.game.width/2, this.game.height/2, 'instrucciones');
+        instruccionesSprite = this.instrucciones;
         this.instrucciones.anchor.setTo(0.5);
         this.instrucciones.alpha = 0;
         this.instrucciones.fixedToCamera = true;
@@ -154,13 +160,13 @@ regaloNavidad.Game.prototype = {
         this.game.time.events.loop(Phaser.Timer.SECOND*0.4, this.updateInmune, this);
 
         muestroInstrucciones = true;
-        this.game.input.onDown.add(this.checkingPauseGame, self);
+        this.game.input.onDown.add(this.quitarInstrucciones, self);
     },
     update: function() {
         if(timerInmune > 0 && muestroInstrucciones){
-            this.pauseGame(this.game);
+            this.mostrarInstrucciones();
         }
-        if (this.player.alive && !this.stopped) {
+        if (this.player.alive && !gamePaused) {
             posPlayerX = this.player.x;
             //Detecto colision con el piso
             this.game.physics.arcade.collide(this.player, this.ground, this.playerOnGround, null, this);
@@ -216,7 +222,7 @@ regaloNavidad.Game.prototype = {
             else {
                 this.player.body.velocity.x = 500;
             }
-            if(tiempoEstrella > 5){
+            if(tiempoEstrella > 50){
                 this.generateEstrellaCoin();
                 tiempoEstrella = 0;
             }
@@ -226,23 +232,27 @@ regaloNavidad.Game.prototype = {
             this.game.camera.x = this.player.x - 320;
         }
     },
-    checkingPauseGame: function(gameVar) {
-        if(this.stopped && muestroInstrucciones){
+    mostrarInstrucciones: function() {
+        if(muestroInstrucciones){
             //Muestro las instrucciones
-            this.game.add.tween(this.instrucciones).to({alpha: 1},300, "Linear", true);
+            var mostrarInstruccionesActivo = regaloNavidad.game.add.tween(instruccionesSprite).to({alpha: 1},100, "Linear", true);
+            mostrarInstruccionesActivo.start();
+            mostrarInstruccionesActivo.onComplete.add(this.pauseGame, this);
             muestroInstrucciones = false;
         }
-        console.log(this.stopped);
     },
-    pauseGame: function(gameVar) {
-        this.stopped = true;
-        gameVar.paused = true;
-        console.log("pepe1");
+    pauseGame: function() {
+        gamePaused = true;
+        this.game.paused = true;
     },
-    resumeGame: function(gameVar) {
-        this.stopped = false;
-        gameVar.paused = false;
-        console.log("pepe2");
+    quitarInstrucciones: function() {
+        if(!muestroInstrucciones && gamePaused){
+            gamePaused = false;
+            thisGame.paused = false;
+            if(!muestroInstrucciones){
+                var mostrarInstruccionesActivo = regaloNavidad.game.add.tween(instruccionesSprite).to({alpha: 0},300, "Linear", true);
+            }
+        }
     },
     actualizarEstados: function(datoToActualizar) {
         switch(datoToActualizar){
@@ -252,7 +262,7 @@ regaloNavidad.Game.prototype = {
                 }
                 else {
                     this.player.alive = false;
-                    this.stopped = true;
+                    gamePaused = true;
                     this.game.paused = true;
                     this.game.stateTransition.to('PostGame_loser');
                 }
@@ -301,7 +311,6 @@ regaloNavidad.Game.prototype = {
         //de esta forma no desapareceran si se alcanza el limite y vuelve al comienzo no Apareceran de la nada
         for (var i = 0; i < numRandomObj; i++) {
             numberOfObject = this.game.rnd.integerInRange(1, 7);
-            numberOfObject = 5;
             switch(numberOfObject){
                 case 1:
                     this.tryNotOverlap(485, numberOfObject, numRandomObj, "obj_0");
@@ -371,7 +380,7 @@ regaloNavidad.Game.prototype = {
         this.estrellaCoin = this.game.add.group();
         //Activo las physics en ellos
         this.estrellaCoin.enableBody = true;
-        if (posPlayerX < 6000) {
+        if (posPlayerX < 6000 && generatedStars > 2) {
             var x = posPlayerX+800;
             var randomY = this.game.rnd.integerInRange(100, 400);
             estrella = this.estrellaCoin.create(x, randomY, 'starCoin');
@@ -380,6 +389,7 @@ regaloNavidad.Game.prototype = {
             estrella.body.bounce.y = 0.8;
             estrella.body.gravity.y = 600;
         }
+        generatedStars++;
     },
     onTouchDown: function(event) {
         touchEventDown = true;
