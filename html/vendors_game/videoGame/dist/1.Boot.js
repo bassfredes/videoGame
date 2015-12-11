@@ -33,6 +33,6 @@ regaloNavidad.Boot.prototype = {
                 }
             }
         });
-        this.state.start('Preload');
+        this.state.start('Ranking');
     }
 };

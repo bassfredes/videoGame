@@ -3,6 +3,7 @@ var loadingText;
 var preloadBar;
 var stadoSiguiente;
 var gameVar;
+var anchoPantalla = $(window).width();
 //  The Google WebFont Loader will look for this object, so create it before loading the script.
 WebFontConfig = {
     //  'active' means all requested fonts have finished loading
@@ -80,6 +81,13 @@ regaloNavidad.Preload.prototype = {
         this.load.image('backgroundLoser', 'assets/images/backgroundLoser.jpg');
         this.load.image('backgroundWinner', 'assets/images/backgroundWinner.jpg');
 
+        if(anchoPantalla <= 768){
+            this.load.image('instrucciones', 'assets/images/instruccionesMobile.png');
+        }
+        else {
+            this.load.image('instrucciones', 'assets/images/instruccionesDesktop.png');
+        }
+
         this.game.load.start();
     },
     loadStart: function() {
@@ -91,6 +99,7 @@ regaloNavidad.Preload.prototype = {
     },
     loadComplete: function() {
         //console.log("completo");
-        gameVar.stateTransition.to('PreGame');
+        //gameVar.stateTransition.to('PreGame');
+        gameVar.stateTransition.to('Game');
     }
 };

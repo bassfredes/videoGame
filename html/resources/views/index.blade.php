@@ -30,6 +30,7 @@
 	<script src="assets/js/videoGame/dist/3.2.Game.min.js"></script>
 	<script src="assets/js/videoGame/dist/3.3.PostGame.loser.min.js"></script>
 	<script src="assets/js/videoGame/dist/3.3.PostGame.winner.min.js"></script>
+	<script src="assets/js/videoGame/dist/4.Ranking.min.js"></script>
 	<!-- endinject -->
 	<script>
     // Load the SDK asynchronously

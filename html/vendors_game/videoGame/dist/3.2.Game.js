@@ -71,6 +71,12 @@ regaloNavidad.Game.prototype = {
 
         this.generateEstrellaCoin();
 
+        //Creo Instrucciones
+        this.instrucciones = this.game.add.sprite(this.game.width/2, this.game.height/2, 'instrucciones');
+        this.instrucciones.anchor.setTo(0.5);
+        this.instrucciones.alpha = 0;
+        this.instrucciones.fixedToCamera = true;
+
         //Creo al Personaje
         this.player = this.game.add.sprite(300, 400, 'player');
         this.player.animations.add('run');
@@ -146,14 +152,13 @@ regaloNavidad.Game.prototype = {
 
         this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTime, this);
         this.game.time.events.loop(Phaser.Timer.SECOND*0.4, this.updateInmune, this);
+
         muestroInstrucciones = true;
+        this.game.input.onDown.add(this.checkingPauseGame, self);
     },
     update: function() {
         if(timerInmune > 0 && muestroInstrucciones){
-            //Muestro las instrucciones
             this.pauseGame(this.game);
-            muestroInstrucciones = false;
-            $.fancybox.open('#instrucciones');
         }
         if (this.player.alive && !this.stopped) {
             posPlayerX = this.player.x;
@@ -221,13 +226,23 @@ regaloNavidad.Game.prototype = {
             this.game.camera.x = this.player.x - 320;
         }
     },
+    checkingPauseGame: function(gameVar) {
+        if(this.stopped && muestroInstrucciones){
+            //Muestro las instrucciones
+            this.game.add.tween(this.instrucciones).to({alpha: 1},300, "Linear", true);
+            muestroInstrucciones = false;
+        }
+        console.log(this.stopped);
+    },
     pauseGame: function(gameVar) {
         this.stopped = true;
         gameVar.paused = true;
+        console.log("pepe1");
     },
     resumeGame: function(gameVar) {
         this.stopped = false;
         gameVar.paused = false;
+        console.log("pepe2");
     },
     actualizarEstados: function(datoToActualizar) {
         switch(datoToActualizar){
@@ -413,6 +428,7 @@ regaloNavidad.Game.prototype = {
         this.game.world.bringToTop(this.estrellaCoin);
         this.game.world.bringToTop(this.player);
         this.game.world.bringToTop(HUDGame);
+        this.game.world.bringToTop(this.instrucciones);
     },
     updateInmune: function() {
         timerInmune++;
