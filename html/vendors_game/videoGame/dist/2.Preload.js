@@ -71,13 +71,13 @@ regaloNavidad.Preload.prototype = {
         this.load.spritesheet('life_002', 'assets/images/life_002.png',290,70,2);
         this.load.spritesheet('hud_enemigos', 'assets/images/hud_enemigos.png',240,200,6);
         this.load.spritesheet('hud_star', 'assets/images/hudStar.png',275,48,6);
-        this.load.spritesheet('mitoCoin', 'assets/images/mitoCoin.png',50,50,7);
+        this.load.spritesheet('mitoCoin', 'assets/images/mitoCoin.png',40,40,7);
         this.load.spritesheet('starCoin', 'assets/images/starCoin.png',80,80,6);
         this.load.spritesheet('player_jump', 'assets/images/player_jump.png',130,130,7);
         this.load.spritesheet('player_dmg', 'assets/images/player_dmg.png',130,130,6);
 
         this.game.load.json('rankingData', 'get_ranking');
-        
+
         this.load.image('backgroundLoser', 'assets/images/backgroundLoser.jpg');
         this.load.image('backgroundWinner', 'assets/images/backgroundWinner.jpg');
 
@@ -100,6 +100,6 @@ regaloNavidad.Preload.prototype = {
     loadComplete: function() {
         //console.log("completo");
         //gameVar.stateTransition.to('PreGame');
-        gameVar.stateTransition.to('PreGame');
+        gameVar.stateTransition.to('Game');
     }
 };

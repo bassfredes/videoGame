@@ -3,12 +3,15 @@ var regaloNavidad = regaloNavidad || {};
 var stadoSiguiente;
 var vidas = 5;
 var estrellas = 0;
+var bonificacion = 0;
+var puntajePorEstrella = 0;
 var estrellasSeguidas = 0;
 var vidasRelEstrellas = 0;
 var puntaje = 0;
 var puntajeText = "";
 var puntajeMitoCoin = 0;
 var puntajeMitoCoinText = "";
+var puntajePorMitoCoin = 0;
 var tiempo = 0;
 var tiempoEstrella = 0;
 var saltando = false;
@@ -33,6 +36,8 @@ var instruccionesSprite;
 var thisGame;
 var generatedStars = 0;
 var bonusPts = 1;
+var anchoPos;
+var mitoCoinObjectsVar;
 
 regaloNavidad.Game = function() {};
 regaloNavidad.Game.prototype = {
@@ -74,6 +79,8 @@ regaloNavidad.Game.prototype = {
         this.generateBuilds();
 
         this.generateObjects();
+
+        this.generateMitoCoins();
 
         this.generateEstrellaCoin();
 
@@ -175,6 +182,7 @@ regaloNavidad.Game.prototype = {
             this.game.physics.arcade.collide(this.estrellaCoin, this.ground, null, null, this);
             this.game.physics.arcade.collide(this.estrellaCoin, this.objects, null, null, this);
             this.game.physics.arcade.collide(this.player, this.estrellaCoin, this.playerHitsEstrellaCoin, null, this);
+            this.game.physics.arcade.collide(this.player, this.mitoCoinObjects, this.playerHitsMitoCoin, null, this);
             //Detecto colision con los objetos
             if (!inmuneActive) {
                 this.game.physics.arcade.collide(this.player, this.objects, this.playerHit, null, this);
@@ -190,6 +198,8 @@ regaloNavidad.Game.prototype = {
                 this.generateBuilds();
                 this.objects.destroy();
                 this.generateObjects();
+                this.mitoCoinObjects.destroy();
+                this.generateMitoCoins();
                 this.estrellaCoin.destroy();
                 this.generateEstrellaCoin();
                 //Le doy orden al espacio
@@ -223,7 +233,7 @@ regaloNavidad.Game.prototype = {
             else {
                 this.player.body.velocity.x = 500;
             }
-            if(tiempoEstrella > 50){
+            if(tiempoEstrella > 1){
                 this.generateEstrellaCoin();
                 tiempoEstrella = 0;
             }
@@ -260,12 +270,11 @@ regaloNavidad.Game.prototype = {
             case 'vida':
                 if(vidas > 1){
                     vidas--;
-                    //bonusPts = 1;
+                    bonusPts = 1;
+                    bonificacion = 0;
                 }
                 else {
                     this.player.alive = false;
-                    gamePaused = true;
-                    this.game.paused = true;
                     this.game.stateTransition.to('PostGame_loser');
                 }
                 if(vidas>1){
@@ -281,6 +290,7 @@ regaloNavidad.Game.prototype = {
             case 'puntajeMitoCoin':
                 puntajeMitoCoin++;
                 puntaje += 1000;
+                puntajePorMitoCoin += 1000;
                 if(puntajeMitoCoin < 10){
                     puntajeMitoCoin = "0"+puntajeMitoCoin;
                 }
@@ -289,13 +299,18 @@ regaloNavidad.Game.prototype = {
             case 'puntajeEstrellaCoin':
                 estrellas++;
                 puntaje += 10000*bonusPts;
+                puntajePorEstrella += 10000;
+                bonificacion += 10000*bonusPts;
+                bonusPts = bonusPts*2;
                 if(estrellas>4){
+                    puntaje += 10000*bonusPts;
+                    bonificacion += 10000*bonusPts;
+                    puntajePorEstrella += 10000;
                     this.game.stateTransition.to('PostGame_winner');
                 }
                 else {
                     this.hud_star.frame = estrellas;
                 }
-                bonusPts*2;
             break;
         }
         puntajeText.setText("Puntaje = " + puntaje);
@@ -305,6 +320,7 @@ regaloNavidad.Game.prototype = {
         this.posiblesPosiciones = Math.floor(this.posiblesPosiciones);
         this.posiblesPosicionesReduced = Math.floor(this.posiblesPosiciones)-4;
         this.anchoPosiciones = anchoActivoWorld/this.posiblesPosiciones;
+        anchoPos = this.anchoPosiciones
         //Genero objetos
         this.objects = this.game.add.group();
         //Activo las physics en ellos
@@ -368,6 +384,49 @@ regaloNavidad.Game.prototype = {
             object.body.immovable = true;
             object.body.allowGravity = false;
         }
+    },
+    generateMitoCoins: function() {
+        var posiblesReduced = this.posiblesPosicionesReduced;
+        var espaciosSeguidosVacios = 0;
+        var caseEspacio = 0;
+        //Genero objetos
+        this.mitoCoinObjects = this.game.add.group();
+        mitoCoinObjectsVar = this.mitoCoinObjects;
+        //Activo las physics en ellos
+        this.mitoCoinObjects.enableBody = true;
+        $.each(posiblesPosMatriz, function(k,v) {
+            if(k<=posiblesReduced){
+                $.each(v, function(kk,vv) {
+                    switch(kk){
+                        case 'estado':
+                            if(vv==false){
+                                espaciosSeguidosVacios++;
+                                caseEspacio = thisGame.rnd.integerInRange(1, 2);
+                                switch (caseEspacio) {
+                                    case 1:
+                                        espaciosSeguidosVacios = 0;
+                                    break;
+                                    case 2:
+                                        for(var numCiclo = 0; numCiclo < espaciosSeguidosVacios; numCiclo++){
+                                            k = parseInt(k);
+                                            objectMitoCoin = mitoCoinObjectsVar.create((k-numCiclo)*anchoPos+thisGame.width + 300, thisGame.rnd.integerInRange(280, 400), 'mitoCoin');
+                                            objectMitoCoin.animations.add('girando');
+                                            objectMitoCoin.animations.play('girando', 8, true);
+                                            objectMitoCoin.body.immovable = true;
+                                            objectMitoCoin.body.allowGravity = false;
+                                        }
+                                        espaciosSeguidosVacios = 0;
+                                    break;
+                                }
+                            }
+                            else {
+                                espaciosSeguidosVacios = 0;
+                            }
+                        break;
+                    }
+                });
+            }
+        });
     },
     generateBuilds: function() {
         this.builds = this.game.add.group();
@@ -443,6 +502,7 @@ regaloNavidad.Game.prototype = {
         this.game.world.bringToTop(this.objects);
         this.game.world.bringToTop(this.estrellaCoin);
         this.game.world.bringToTop(this.player);
+        this.game.world.bringToTop(this.mitoCoinObjects);
         this.game.world.bringToTop(HUDGame);
         this.game.world.bringToTop(this.instrucciones);
     },
@@ -470,6 +530,10 @@ regaloNavidad.Game.prototype = {
     playerHitsEstrellaCoin: function() {
         this.estrellaCoin.destroy();
         this.actualizarEstados("puntajeEstrellaCoin");
+    },
+    playerHitsMitoCoin: function(player, coinHitted) {
+        coinHitted.destroy();
+        this.actualizarEstados("puntajeMitoCoin");
     },
     playerHit: function() {
         if (playerAfectable && this.player.body.touching.right && !corriendoSobreObjeto) {
