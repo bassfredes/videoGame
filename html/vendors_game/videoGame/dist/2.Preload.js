@@ -100,6 +100,6 @@ regaloNavidad.Preload.prototype = {
     loadComplete: function() {
         //console.log("completo");
         //gameVar.stateTransition.to('PreGame');
-        gameVar.stateTransition.to('Game');
+        gameVar.stateTransition.to('PreGame');
     }
 };
