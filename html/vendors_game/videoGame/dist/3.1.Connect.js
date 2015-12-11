@@ -6,7 +6,6 @@ regaloNavidad.Connection.prototype = {
 
     },
     create: function() {
-        console.log("Pepe");
         this.backgroundConnection = this.game.add.sprite(0, 0, 'backgroundConnection');
         this.btnSalir = this.game.add.button((this.game.world.centerX)-60, this.game.world.height, 'btnSalir', this.clickOnbtnSalir, this);
         this.btnConectarse = this.game.add.button(this.game.world.width, this.game.world.centerY+80, 'btnConectarse', this.clickOnbtnConectarse, this);
