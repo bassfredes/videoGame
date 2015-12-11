@@ -28,7 +28,6 @@ var posiblesPosMatriz = {};
 var numberOfObject;
 var posPlayerX = 0;
 var muestroInstrucciones = false;
-var gameVar;
 
 regaloNavidad.Game = function() {};
 regaloNavidad.Game.prototype = {
@@ -36,7 +35,6 @@ regaloNavidad.Game.prototype = {
         this.game.time.advancedTiming = true;
     },
     create: function() {
-        gameVar = this.game;
         stadoSiguiente = this.state;
         this.wraps = 0;
         //Configuro el mundo y sus limites
@@ -149,31 +147,26 @@ regaloNavidad.Game.prototype = {
         this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTime, this);
         this.game.time.events.loop(Phaser.Timer.SECOND*0.4, this.updateInmune, this);
         muestroInstrucciones = true;
-        $(window).on('fancyboxClosed', function(){
-            this.stopped = false;
-            gameVar.paused = false;
-        });
     },
     update: function() {
         if(timerInmune > 0 && muestroInstrucciones){
             //Muestro las instrucciones
-            this.stopped = true;
-            this.game.paused = true;
+            this.pauseGame(this.game);
             muestroInstrucciones = false;
             $.fancybox.open('#instrucciones');
         }
-        posPlayerX = this.player.x;
-        //Detecto colision con el piso
-        this.game.physics.arcade.collide(this.player, this.ground, this.playerOnGround, null, this);
-        //Detecto colision por parte de estrella
-        this.game.physics.arcade.collide(this.estrellaCoin, this.ground, null, null, this);
-        this.game.physics.arcade.collide(this.estrellaCoin, this.objects, null, null, this);
-        this.game.physics.arcade.collide(this.player, this.estrellaCoin, this.playerHitsEstrellaCoin, null, this);
-        if (!inmuneActive) {
-            this.game.physics.arcade.collide(this.player, this.objects, this.playerHit, null, this);
-        }
-        //Detecto colision con los objetos
         if (this.player.alive && !this.stopped) {
+            posPlayerX = this.player.x;
+            //Detecto colision con el piso
+            this.game.physics.arcade.collide(this.player, this.ground, this.playerOnGround, null, this);
+            //Detecto colision por parte de estrella
+            this.game.physics.arcade.collide(this.estrellaCoin, this.ground, null, null, this);
+            this.game.physics.arcade.collide(this.estrellaCoin, this.objects, null, null, this);
+            this.game.physics.arcade.collide(this.player, this.estrellaCoin, this.playerHitsEstrellaCoin, null, this);
+            //Detecto colision con los objetos
+            if (!inmuneActive) {
+                this.game.physics.arcade.collide(this.player, this.objects, this.playerHit, null, this);
+            }
             //Se calculan los limites del World
             //Si se alcanzan, queremos destruir todo y regenerar de esta forma el World parece Random
             if (!this.wrapping && this.player.x < this.game.width) {
@@ -227,6 +220,14 @@ regaloNavidad.Game.prototype = {
             //Asigno que la camara siga al personaje con un offset
             this.game.camera.x = this.player.x - 320;
         }
+    },
+    pauseGame: function(gameVar) {
+        this.stopped = true;
+        gameVar.paused = true;
+    },
+    resumeGame: function(gameVar) {
+        this.stopped = false;
+        gameVar.paused = false;
     },
     actualizarEstados: function(datoToActualizar) {
         switch(datoToActualizar){

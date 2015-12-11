@@ -25,7 +25,7 @@ regaloNavidad.PreGame.prototype = {
     clickOnbtnRanking: function() {
     },
     clickOnbtnComenzar: function() {
-        stadoSiguiente.start('Game');
+        stadoSiguiente.start('Connection');
     },
     startBounceComenzarJuego: function() {
         this.btnComenzar.x = this.btnComenzar.x;

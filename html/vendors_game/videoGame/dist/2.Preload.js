@@ -44,6 +44,9 @@ regaloNavidad.Preload.prototype = {
         this.load.image('btnCompartir', 'assets/images/btnCompartir.png');
         this.load.image('btnRanking', 'assets/images/btnRanking.png');
         this.load.image('btnComenzar', 'assets/images/btnComenzar.png');
+        this.load.image('btnConectarse', 'assets/images/btnConectarse.png');
+        this.load.image('btnSalir', 'assets/images/btnSalir.png');
+        this.load.image('backgroundConnection', 'assets/images/backgroundConnection.jpg');
         this.load.image('btnVolverAJugar', 'assets/images/btnVolverAJugar.png');
         this.load.image('backgroundBase', 'assets/images/backgroundGame0.jpg');
         this.load.image('backgroundTiles', 'assets/images/backgroundGame.png');
