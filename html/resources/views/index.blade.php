@@ -8,6 +8,13 @@
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<title>El Último Regalo - Mitocondria</title>
+	<meta property="og:title" content="El último regalo">
+	<meta property="og:site_name" content="Mitocondria El último regalo">
+	<meta property="og:url" content="http://192.168.1.143:8080/public/">
+	<meta property="og:description" content="Mitocondria tiene para ti una sorpresa muy especial que podrás compartir con tus amigos y familia. Juega con nosotros y corre para salvar el último regalo.">
+	<meta property="og:image" content="assets/images/facebbok_banner.jpg"/>
+	<meta property="fb:app_id" content="1644249609162562">
+	<meta property="og:type" content="website">
 	<link rel="shortcut icon" href="assets/favicon/favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png" />
 	<link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-touch-icon-57x57.png" />
@@ -26,21 +33,21 @@
 	<!-- endinject -->
 	<!-- !JS -->
 	<!-- head:js -->
-	<script src="assets/js/jquery/dist/jquery.min.js"></script>
 	<script src="assets/js/gameController/dist/gamecontroller.min.js"></script>
+	<script src="assets/js/jquery/dist/jquery.min.js"></script>
 	<script src="assets/js/phaser/build/phaser.min.js"></script>
 	<script src="assets/js/state-transition/dist/phaser-state-transition-plugin.min.js"></script>
 	<script src="assets/js/scripts.js"></script>
 	<!-- endinject -->
+	<script src="../vendors_game/videoGame/dist/1.Boot.js"></script>
+	<script src="../vendors_game/videoGame/dist/2.Preload.js"></script>
+	<script src="../vendors_game/videoGame/dist/3.0.PreGame.js"></script>
+	<script src="../vendors_game/videoGame/dist/3.1.Connect.js"></script>
+	<script src="../vendors_game/videoGame/dist/3.2.Game.js"></script>
+	<script src="../vendors_game/videoGame/dist/3.3.PostGame.loser.js"></script>
+	<script src="../vendors_game/videoGame/dist/3.3.PostGame.winner.js"></script>
+	<script src="../vendors_game/videoGame/dist/4.Ranking.js"></script>
 	<!-- game:js -->
-	<script src="assets/js/videoGame/dist/1.Boot.min.js"></script>
-	<script src="assets/js/videoGame/dist/2.Preload.min.js"></script>
-	<script src="assets/js/videoGame/dist/3.0.PreGame.min.js"></script>
-	<script src="assets/js/videoGame/dist/3.1.Connect.min.js"></script>
-	<script src="assets/js/videoGame/dist/3.2.Game.min.js"></script>
-	<script src="assets/js/videoGame/dist/3.3.PostGame.loser.min.js"></script>
-	<script src="assets/js/videoGame/dist/3.3.PostGame.winner.min.js"></script>
-	<script src="assets/js/videoGame/dist/4.Ranking.min.js"></script>
 	<!-- endinject -->
 	<script>
     // Load the SDK asynchronously

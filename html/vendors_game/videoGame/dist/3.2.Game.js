@@ -7,7 +7,7 @@ var bonificacion = 0;
 var puntajePorEstrella = 0;
 var estrellasSeguidas = 0;
 var vidasRelEstrellas = 0;
-var puntaje = 0;
+var puntajeTotal = 0;
 var puntajeText = "";
 var puntajeMitoCoin = 0;
 var puntajeMitoCoinText = "";
@@ -39,6 +39,7 @@ var bonusPts = 1;
 var anchoPos = 0;
 var mitoCoinObjectsVar;
 var firstTime = true;
+var backgroundMusicVar;
 
 regaloNavidad.Game = function() {};
 regaloNavidad.Game.prototype = {
@@ -142,7 +143,7 @@ regaloNavidad.Game.prototype = {
         this.game.physics.enable([this.player, this.ground, this.objects, this.estrellaCoin], Phaser.Physics.ARCADE);
 
         //Player gravity
-        this.player.body.gravity.y = 1800;
+        this.player.body.gravity.y = 2200;
         this.player.body.setSize(this.player.width - 60, this.player.height);
 
         //Hago inmovible el Ground y que no le afecte la Gravedad
@@ -167,15 +168,22 @@ regaloNavidad.Game.prototype = {
         }
 
         this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTime, this);
-        this.game.time.events.loop(Phaser.Timer.SECOND*0.4, this.updateInmune, this);
+        this.game.time.events.loop(Phaser.Timer.SECOND*0.3, this.updateInmune, this);
 
         muestroInstrucciones = true;
         this.game.input.onDown.add(this.quitarInstrucciones, self);
         this.spaceBar.onDown.add(this.quitarInstrucciones, self);
 
         //Sonidos
+        this.backgroundMusic = this.game.add.audio('backgroundMusic');
+        this.backgroundMusic.loop = true;
+        this.backgroundMusic.volume = 0.2;
+        this.backgroundMusic.play();
+        backgroundMusicVar = this.backgroundMusic;
         this.mitoCoinGrab = this.game.add.audio('mitoCoinGrab');
+        this.mitoCoinGrab.volume = 0.8;
         this.starCoinGrab = this.game.add.audio('starCoinGrab');
+        this.starCoinGrab.volume = 0.8;
     },
     update: function() {
         if(timerInmune > 0 && muestroInstrucciones){
@@ -227,9 +235,9 @@ regaloNavidad.Game.prototype = {
                 ableToSaltar2 = false;
             }
             if (inmuneActive) {
-                this.player.body.velocity.x = 300;
+                this.player.body.velocity.x = 200;
                 playerAfectable = false;
-                if (timerInmune > 1) {
+                if (timerInmune > 0) {
                     playerAfectable = true;
                     inmuneActive = false;
                     this.player.loadTexture('player', 0);
@@ -296,7 +304,7 @@ regaloNavidad.Game.prototype = {
             case 'puntajeMitoCoin':
                 this.mitoCoinGrab.play();
                 puntajeMitoCoin++;
-                puntaje += 1000;
+                puntajeTotal += 1000;
                 puntajePorMitoCoin += 1000;
                 if(puntajeMitoCoin < 10){
                     puntajeMitoCoin = "0"+puntajeMitoCoin;
@@ -306,12 +314,12 @@ regaloNavidad.Game.prototype = {
             case 'puntajeEstrellaCoin':
                 this.starCoinGrab.play();
                 estrellas++;
-                puntaje += 10000*bonusPts;
+                puntajeTotal += 10000*bonusPts;
                 puntajePorEstrella += 10000;
                 bonificacion += 10000*bonusPts;
                 bonusPts = bonusPts*2;
                 if(estrellas>4){
-                    puntaje += 10000*bonusPts;
+                    puntajeTotal += 10000*bonusPts;
                     puntajePorEstrella += 10000;
                     bonificacion += 10000*bonusPts;
                     this.game.stateTransition.to('PostGame_winner');
@@ -321,12 +329,12 @@ regaloNavidad.Game.prototype = {
                 }
             break;
         }
-        puntajeText.setText("Puntaje = " + puntaje);
+        puntajeText.setText("Puntaje = " + puntajeTotal);
     },
     generateObjects: function(reason) {
         this.posiblesPosiciones = anchoActivoWorld/200;
         this.posiblesPosiciones = Math.floor(this.posiblesPosiciones);
-        this.posiblesPosicionesReduced = Math.floor(this.posiblesPosiciones)-4;
+        this.posiblesPosicionesReduced = Math.floor(this.posiblesPosiciones)-5;
         this.anchoPosiciones = anchoActivoWorld/this.posiblesPosiciones;
         anchoPos = this.anchoPosiciones;
         //Genero objetos

@@ -82,11 +82,11 @@ regaloNavidad.PostGame_loser.prototype = {
             if(initialPuntaje03 >= bonificacion) {
                 initialPuntaje03 = bonificacion;
             }
-            if(initialPuntaje04 < puntaje) {
+            if(initialPuntaje04 < puntajeTotal) {
                 initialPuntaje04 += 1000;
             }
-            if(initialPuntaje04 >= puntaje) {
-                initialPuntaje04 = puntaje;
+            if(initialPuntaje04 >= puntajeTotal) {
+                initialPuntaje04 = puntajeTotal;
             }
         }
         puntajeText_01.setText("Monedas: "+initialPuntaje01);
@@ -111,7 +111,7 @@ regaloNavidad.PostGame_loser.prototype = {
         puntajePorEstrella = 0;
         estrellasSeguidas = 0;
         vidasRelEstrellas = 0;
-        puntaje = 0;
+        puntajeTotal = 0;
         puntajeText = "";
         puntajeMitoCoin = 0;
         puntajeMitoCoinText = "";
@@ -139,6 +139,7 @@ regaloNavidad.PostGame_loser.prototype = {
         anchoPos = 0;
         firstTime = false;
         tiempoPostGame = 0;
+        backgroundMusicVar.stop();
         gameVar.stateTransition.to('Game');
     },
     startBounceVolverAJugar: function() {

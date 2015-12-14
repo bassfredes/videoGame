@@ -23,9 +23,9 @@ regaloNavidad.PostGame_winner.prototype = {
     },
     create: function() {
         this.backgroundWinner = this.game.add.sprite(0, 0, 'backgroundWinner');
-        this.btnVolverAJugar = this.game.add.button(this.game.world.width, this.game.world.centerY+230, 'btnVolverAJugar', this.clickOnbtnVolverAJugar, this);
+        this.btnVolverAJugar = this.game.add.button(this.game.world.width, this.game.world.centerY+110, 'btnVolverAJugar', this.clickOnbtnVolverAJugar, this);
         this.btnVolverAJugar.anchor.setTo(0.5);
-        this.btnRanking = this.game.add.button(this.game.world.width, this.game.world.centerY+170, 'btnRanking', this.clickOnbtnRanking, this);
+        this.btnRanking = this.game.add.button(this.game.world.width, this.game.world.centerY+50, 'btnRanking', this.clickOnbtnRanking, this);
         this.btnRanking.anchor.setTo(0.5);
         this.btnCompartir = this.game.add.button(this.game.world.centerX, this.game.world.height, 'btnCompartir', this.clickOnbtnCompartir, this);
         this.btnCompartir.anchor.setTo(0.5);
@@ -83,11 +83,11 @@ regaloNavidad.PostGame_winner.prototype = {
             if(initialPuntaje03 >= bonificacion) {
                 initialPuntaje03 = bonificacion;
             }
-            if(initialPuntaje04 < puntaje) {
+            if(initialPuntaje04 < puntajeTotal) {
                 initialPuntaje04 += 1000;
             }
-            if(initialPuntaje04 >= puntaje) {
-                initialPuntaje04 = puntaje;
+            if(initialPuntaje04 >= puntajeTotal) {
+                initialPuntaje04 = puntajeTotal;
             }
         }
         puntajeText_01.setText("Monedas: "+initialPuntaje01);
@@ -112,7 +112,7 @@ regaloNavidad.PostGame_winner.prototype = {
         puntajePorEstrella = 0;
         estrellasSeguidas = 0;
         vidasRelEstrellas = 0;
-        puntaje = 0;
+        puntajeTotal = 0;
         puntajeText = "";
         puntajeMitoCoin = 0;
         puntajeMitoCoinText = "";
@@ -140,6 +140,7 @@ regaloNavidad.PostGame_winner.prototype = {
         anchoPos = 0;
         firstTime = false;
         tiempoPostGame = 0;
+        backgroundMusicVar.stop();
         gameVar.stateTransition.to('Game');
     },
     startBounceVolverAJugar: function() {

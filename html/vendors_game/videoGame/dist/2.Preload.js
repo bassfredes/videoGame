@@ -81,6 +81,7 @@ regaloNavidad.Preload.prototype = {
         this.load.image('backgroundLoser', 'assets/images/backgroundLoser.jpg');
         this.load.image('backgroundWinner', 'assets/images/backgroundWinner.jpg');
 
+        this.game.load.audio('backgroundMusic', ['assets/audio/backgroundMusic.ogg', 'assets/audio/backgroundMusic.mp3']);
         this.game.load.audio('mitoCoinGrab', ['assets/audio/monedas_01.ogg', 'assets/audio/monedas_01.wav', 'assets/audio/monedas_01.mp3']);
         this.game.load.audio('starCoinGrab', ['assets/audio/estrella_01.ogg', 'assets/audio/estrella_01.wav', 'assets/audio/estrella_01.mp3']);
 
@@ -102,6 +103,6 @@ regaloNavidad.Preload.prototype = {
     },
     loadComplete: function() {
         //console.log("completo");
-        gameVar.stateTransition.to('PreGame');
+        gameVar.stateTransition.to('PostGame_winner');
     }
 };

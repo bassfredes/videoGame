@@ -17,7 +17,6 @@ regaloNavidad.PreGame.prototype = {
     update: function() {
     },
     render: function() {
-        //this.game.debug.inputInfo(32, 38);
     },
     clickOnbtnCompartir: function() {
     },
