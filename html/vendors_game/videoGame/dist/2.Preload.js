@@ -4,6 +4,7 @@ var preloadBar;
 var stadoSiguiente;
 var gameVar;
 var anchoPantalla = $(window).width();
+var phaserRankingJSON;
 //  The Google WebFont Loader will look for this object, so create it before loading the script.
 WebFontConfig = {
     //  'active' means all requested fonts have finished loading
@@ -53,6 +54,7 @@ regaloNavidad.Preload.prototype = {
         this.load.image('hud_mitocondria', 'assets/images/hud_mitocondria.png');
         this.load.image('hud_mitoCoin', 'assets/images/moneda_paracontador.png');
         this.load.image('hud_backgroundTrama', 'assets/images/backgroundTrama.png');
+        this.load.image('fondo_ranking', 'assets/images/fondo_ranking.jpg');
         this.load.image('build_01', 'assets/images/build_01.png');
         this.load.image('build_02', 'assets/images/build_02.png');
         this.load.image('build_03', 'assets/images/build_03.png');

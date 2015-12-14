@@ -33,8 +33,9 @@ class User extends Model implements AuthenticatableContract,
          'id' => 'facebook_id',
          'name' => 'name',
          'email' => 'email',
+         'picture.url' => 'picture'
      ];
-    protected $fillable = ['facebook_id', 'name', 'email'];
+    protected $fillable = ['facebook_id', 'name', 'email', 'picture'];
 
     /**
      * The attributes excluded from the model's JSON form.

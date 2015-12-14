@@ -55,7 +55,7 @@ function statusChangeCallback(response) {
             $.ajax({
                 url: '/js_fblogin_callback',
                 type: 'get',
-                success: function () {
+                success: function (data) {
                     console.log('Conectados a FB y usuario guardado');
                 }
             });
