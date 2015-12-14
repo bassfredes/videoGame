@@ -8,6 +8,16 @@
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<title>El Último Regalo - Mitocondria</title>
+	<link rel="shortcut icon" href="assets/favicon/favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-touch-icon-57x57.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-touch-icon-76x76.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-touch-icon-114x114.png" />
+	<link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-touch-icon-120x120.png" />
+	<link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-touch-icon-144x144.png" />
+	<link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-touch-icon-152x152.png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon-180x180.png" />
 	<!-- !CSS -->
 	<!-- inject:css -->
 	<link rel="stylesheet" href="assets/css/reset.min.css">
@@ -22,15 +32,15 @@
 	<script src="assets/js/state-transition/dist/phaser-state-transition-plugin.min.js"></script>
 	<script src="assets/js/scripts.js"></script>
 	<!-- endinject -->
-	<script src="../vendors_game/videoGame/dist/1.Boot.js"></script>
-	<script src="../vendors_game/videoGame/dist/2.Preload.js"></script>
-	<script src="../vendors_game/videoGame/dist/3.0.PreGame.js"></script>
-	<script src="../vendors_game/videoGame/dist/3.1.Connect.js"></script>
-	<script src="../vendors_game/videoGame/dist/3.2.Game.js"></script>
-	<script src="../vendors_game/videoGame/dist/3.3.PostGame.loser.js"></script>
-	<script src="../vendors_game/videoGame/dist/3.3.PostGame.winner.js"></script>
-	<script src="../vendors_game/videoGame/dist/4.Ranking.js"></script>
 	<!-- game:js -->
+	<script src="assets/js/videoGame/dist/1.Boot.min.js"></script>
+	<script src="assets/js/videoGame/dist/2.Preload.min.js"></script>
+	<script src="assets/js/videoGame/dist/3.0.PreGame.min.js"></script>
+	<script src="assets/js/videoGame/dist/3.1.Connect.min.js"></script>
+	<script src="assets/js/videoGame/dist/3.2.Game.min.js"></script>
+	<script src="assets/js/videoGame/dist/3.3.PostGame.loser.min.js"></script>
+	<script src="assets/js/videoGame/dist/3.3.PostGame.winner.min.js"></script>
+	<script src="assets/js/videoGame/dist/4.Ranking.min.js"></script>
 	<!-- endinject -->
 	<script>
     // Load the SDK asynchronously
