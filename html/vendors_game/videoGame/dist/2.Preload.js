@@ -4,6 +4,7 @@ var preloadBar;
 var stadoSiguiente;
 var gameVar;
 var anchoPantalla = $(window).width();
+var phaserRankingJSON;
 //  The Google WebFont Loader will look for this object, so create it before loading the script.
 WebFontConfig = {
     //  'active' means all requested fonts have finished loading

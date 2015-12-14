@@ -73,13 +73,12 @@ class NavidadController extends Controller{
 
         // Get basic info on the user from Facebook.
         try {
-            $response = $fb->get('/me?fields=id,name,email');
+            $response = $fb->get('/me?fields=id,name,email,picture{url}');
         } catch (Facebook\Exceptions\FacebookSDKException $e) {
             dd($e->getMessage());
         }
         // Convert the response to a `Facebook/GraphNodes/GraphUser` collection
         $facebook_user = $response->getGraphUser();
-
         // Create the user if it does not exist or update the existing entry.
         // This will only work if you've added the SyncableGraphNodeTrait to your User model.
         $user = User::createOrUpdateGraphNode($facebook_user);
@@ -129,7 +128,7 @@ class NavidadController extends Controller{
 
     // Get basic info on the user from Facebook.
     try {
-        $response = $fb->get('/me?fields=id,name,email');
+        $response = $fb->get('/me?fields=id,name,email,picture{url}');
     } catch (Facebook\Exceptions\FacebookSDKException $e) {
         dd($e->getMessage());
     }
@@ -143,7 +142,7 @@ class NavidadController extends Controller{
     // Log the user into Laravel
     Auth::login($user);
 
-    return redirect('/success')->with('message', 'Successfully logged in with Facebook');
+    return redirect('/success')->with('message', $facebook_user);
     }
     public function success(){
         return view('fbsuccess');
