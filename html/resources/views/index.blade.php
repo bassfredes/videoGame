@@ -39,13 +39,7 @@
 	<script src="assets/js/state-transition/dist/phaser-state-transition-plugin.min.js"></script>
 	<script src="assets/js/scripts.js"></script>
 	<!-- endinject -->
-<<<<<<< HEAD
 	<!--
-=======
-	<!-- game:js -->
-
-	<!-- endinject -->
->>>>>>> b88913ed238aea1ae971a3e95530dc9b088c8493
 	<script src="../vendors_game/videoGame/dist/1.Boot.js"></script>
 	<script src="../vendors_game/videoGame/dist/2.Preload.js"></script>
 	<script src="../vendors_game/videoGame/dist/3.0.PreGame.js"></script>
@@ -54,7 +48,6 @@
 	<script src="../vendors_game/videoGame/dist/3.3.PostGame.loser.js"></script>
 	<script src="../vendors_game/videoGame/dist/3.3.PostGame.winner.js"></script>
 	<script src="../vendors_game/videoGame/dist/4.Ranking.js"></script>
-<<<<<<< HEAD
 	-->
 	<!-- game:js -->
 	<script src="assets/js/videoGame/dist/1.Boot.min.js"></script>
@@ -66,8 +59,6 @@
 	<script src="assets/js/videoGame/dist/3.3.PostGame.winner.min.js"></script>
 	<script src="assets/js/videoGame/dist/4.Ranking.min.js"></script>
 	<!-- endinject -->
-=======
->>>>>>> b88913ed238aea1ae971a3e95530dc9b088c8493
 	<script>
     // Load the SDK asynchronously
     (function(d, s, id) {
