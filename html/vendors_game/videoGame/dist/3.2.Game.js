@@ -26,9 +26,9 @@ var playerAfectable = true;
 var inmuneActive = false;
 var timerInmune = 0;
 var corriendoSobreObjeto = false;
-var anchoActivoWorld;
+var anchoActivoWorld = 0;
 var posiblesPosMatriz = {};
-var numberOfObject;
+var numberOfObject = 0;
 var posPlayerX = 0;
 var muestroInstrucciones = false;
 var gamePaused = false;
@@ -36,8 +36,9 @@ var instruccionesSprite;
 var thisGame;
 var generatedStars = 0;
 var bonusPts = 1;
-var anchoPos;
+var anchoPos = 0;
 var mitoCoinObjectsVar;
+var firstTime = true;
 
 regaloNavidad.Game = function() {};
 regaloNavidad.Game.prototype = {
@@ -50,7 +51,6 @@ regaloNavidad.Game.prototype = {
         this.wraps = 0;
         //Configuro el mundo y sus limites
         this.game.world.setBounds(0, 0, 8000, this.game.height);
-
 
         //Guardo Ancho Activo del Mapa
         anchoActivoWorld = this.game.world.width - this.game.width - 900;
@@ -159,16 +159,23 @@ regaloNavidad.Game.prototype = {
         this.ordenWorld();
 
         //Agrego los inputs para que detecten varias entradas de pointer
-        this.game.input.addPointer();
-        this.game.input.addPointer();
-        this.game.input.addPointer();
-        this.game.input.addPointer();
+        if(firstTime){
+            this.game.input.addPointer();
+            this.game.input.addPointer();
+            this.game.input.addPointer();
+            this.game.input.addPointer();
+        }
 
         this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTime, this);
         this.game.time.events.loop(Phaser.Timer.SECOND*0.4, this.updateInmune, this);
 
         muestroInstrucciones = true;
         this.game.input.onDown.add(this.quitarInstrucciones, self);
+        this.spaceBar.onDown.add(this.quitarInstrucciones, self);
+
+        //Sonidos
+        this.mitoCoinGrab = this.game.add.audio('mitoCoinGrab');
+        this.starCoinGrab = this.game.add.audio('starCoinGrab');
     },
     update: function() {
         if(timerInmune > 0 && muestroInstrucciones){
@@ -233,7 +240,7 @@ regaloNavidad.Game.prototype = {
             else {
                 this.player.body.velocity.x = 500;
             }
-            if(tiempoEstrella > 1){
+            if(tiempoEstrella > 50){
                 this.generateEstrellaCoin();
                 tiempoEstrella = 0;
             }
@@ -271,7 +278,6 @@ regaloNavidad.Game.prototype = {
                 if(vidas > 1){
                     vidas--;
                     bonusPts = 1;
-                    bonificacion = 0;
                 }
                 else {
                     this.player.alive = false;
@@ -288,6 +294,7 @@ regaloNavidad.Game.prototype = {
                 this.game.add.tween(this.hud_enemigos).to( { x: '+50' }, 2000, Phaser.Easing.Linear.None, true);
             break;
             case 'puntajeMitoCoin':
+                this.mitoCoinGrab.play();
                 puntajeMitoCoin++;
                 puntaje += 1000;
                 puntajePorMitoCoin += 1000;
@@ -297,6 +304,7 @@ regaloNavidad.Game.prototype = {
                 puntajeMitoCoinText.setText(" = " + puntajeMitoCoin);
             break;
             case 'puntajeEstrellaCoin':
+                this.starCoinGrab.play();
                 estrellas++;
                 puntaje += 10000*bonusPts;
                 puntajePorEstrella += 10000;
@@ -304,8 +312,8 @@ regaloNavidad.Game.prototype = {
                 bonusPts = bonusPts*2;
                 if(estrellas>4){
                     puntaje += 10000*bonusPts;
-                    bonificacion += 10000*bonusPts;
                     puntajePorEstrella += 10000;
+                    bonificacion += 10000*bonusPts;
                     this.game.stateTransition.to('PostGame_winner');
                 }
                 else {
@@ -320,7 +328,7 @@ regaloNavidad.Game.prototype = {
         this.posiblesPosiciones = Math.floor(this.posiblesPosiciones);
         this.posiblesPosicionesReduced = Math.floor(this.posiblesPosiciones)-4;
         this.anchoPosiciones = anchoActivoWorld/this.posiblesPosiciones;
-        anchoPos = this.anchoPosiciones
+        anchoPos = this.anchoPosiciones;
         //Genero objetos
         this.objects = this.game.add.group();
         //Activo las physics en ellos
@@ -363,21 +371,15 @@ regaloNavidad.Game.prototype = {
         this.posXMatriz = this.game.rnd.integerInRange(1, this.posiblesPosicionesReduced);
         var maxIntentos = 0;
         posiblesPosMatriz[this.posXMatriz]["objectNumber"] = objectNumber;
-        if(preObject == "obj_0"){
-            while(posiblesPosMatriz[this.posXMatriz]["estado"] == true && maxIntentos < 4 || posiblesPosMatriz[this.posXMatriz-1]["objectNumber"] == 5 && maxIntentos < 4){
-                this.posXMatriz = this.game.rnd.integerInRange(1, this.posiblesPosicionesReduced);
-                maxIntentos++;
-            }
-        }
-        else {
-            while(posiblesPosMatriz[this.posXMatriz]["estado"] == true && maxIntentos < 4){
-                this.posXMatriz = this.game.rnd.integerInRange(1, this.posiblesPosicionesReduced);
-                maxIntentos++;
-            }
+        while(posiblesPosMatriz[this.posXMatriz]["estado"] == true && maxIntentos < 4 || posiblesPosMatriz[this.posXMatriz-1]["objectNumber"] == 5 && maxIntentos < 4 || posiblesPosMatriz[this.posXMatriz+1]["objectNumber"] == 5 && maxIntentos < 4){
+            this.posXMatriz = this.game.rnd.integerInRange(1, this.posiblesPosicionesReduced);
+            maxIntentos++;
         }
         posiblesPosMatriz[this.posXMatriz]["estado"] = true;
+        posiblesPosMatriz[this.posXMatriz]["objectNumber"] = objectNumber;
         if(objectNumber == 5){
             posiblesPosMatriz[this.posXMatriz+1]["estado"] = true;
+            posiblesPosMatriz[this.posXMatriz+1]["objectNumber"] = objectNumber;
         }
         if(maxIntentos < 4){
             object = this.objects.create(this.posXMatriz*this.anchoPosiciones+this.game.width + 300, posY, preObject+objectNumber);

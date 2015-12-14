@@ -1,4 +1,5 @@
 var regaloNavidad = regaloNavidad || {};
+var gameVar;
 var puntajeText_01;
 var puntajeText_02;
 var puntajeText_03;
@@ -17,10 +18,7 @@ regaloNavidad.PostGame_loser.prototype = {
         if(bonificacion > 0) {
             bonificacion = bonificacion - puntajePorEstrella;
         }
-        console.log("puntajePorMitoCoin: "+puntajePorMitoCoin);
-        console.log("puntajePorEstrella: "+puntajePorEstrella);
-        console.log("bonificacion: "+bonificacion);
-        console.log("puntaje: "+puntaje);
+        gameVar = this.game;
     },
     create: function() {
         this.backgroundLoser = this.game.add.sprite(0, 0, 'backgroundLoser');
@@ -57,30 +55,35 @@ regaloNavidad.PostGame_loser.prototype = {
         puntajeText_04.font = "Lobster";
         puntajeText_04.fontSize = 42;
 
+        initialPuntaje01 = 0;
+        initialPuntaje02 = 0;
+        initialPuntaje03 = 0;
+        initialPuntaje04 = 0;
+
         this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimeGameOver, this);
     },
     update: function() {
         if(tiempoPostGame > 0){
             if(initialPuntaje01 < puntajePorMitoCoin) {
-                initialPuntaje01 += 100;
+                initialPuntaje01 += 1000;
             }
             if(initialPuntaje01 >= puntajePorMitoCoin) {
                 initialPuntaje01 = puntajePorMitoCoin;
             }
             if(initialPuntaje02 < puntajePorEstrella) {
-                initialPuntaje02 += 100;
+                initialPuntaje02 += 1000;
             }
             if(initialPuntaje02 >= puntajePorEstrella) {
                 initialPuntaje02 = puntajePorEstrella;
             }
             if(initialPuntaje03 < bonificacion) {
-                initialPuntaje03 += 100;
+                initialPuntaje03 += 1000;
             }
             if(initialPuntaje03 >= bonificacion) {
                 initialPuntaje03 = bonificacion;
             }
             if(initialPuntaje04 < puntaje) {
-                initialPuntaje04 += 100;
+                initialPuntaje04 += 1000;
             }
             if(initialPuntaje04 >= puntaje) {
                 initialPuntaje04 = puntaje;
@@ -99,8 +102,44 @@ regaloNavidad.PostGame_loser.prototype = {
     clickOnbtnCompartir: function() {
     },
     clickOnbtnRanking: function() {
+    gameVar.stateTransition.to('Ranking');
     },
     clickOnbtnVolverAJugar: function() {
+        vidas = 5;
+        estrellas = 0;
+        bonificacion = 0;
+        puntajePorEstrella = 0;
+        estrellasSeguidas = 0;
+        vidasRelEstrellas = 0;
+        puntaje = 0;
+        puntajeText = "";
+        puntajeMitoCoin = 0;
+        puntajeMitoCoinText = "";
+        puntajePorMitoCoin = 0;
+        tiempo = 0;
+        tiempoEstrella = 0;
+        saltando = false;
+        ableToSaltar1 = true;
+        ableToSaltar2 = true;
+        onGround = false;
+        touchEventDown = false;
+        touchEventUp = true;
+        playerAfectable = true;
+        inmuneActive = false;
+        timerInmune = 0;
+        corriendoSobreObjeto = false;
+        anchoActivoWorld = 0;
+        posiblesPosMatriz = {};
+        numberOfObject = 0;
+        posPlayerX = 0;
+        muestroInstrucciones = false;
+        gamePaused = false;
+        generatedStars = 0;
+        bonusPts = 1;
+        anchoPos = 0;
+        firstTime = false;
+        tiempoPostGame = 0;
+        gameVar.stateTransition.to('Game');
     },
     startBounceVolverAJugar: function() {
         this.btnVolverAJugar.x = this.btnVolverAJugar.x+this.btnVolverAJugar.width;

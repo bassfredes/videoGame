@@ -26,8 +26,8 @@
 	<!-- endinject -->
 	<!-- !JS -->
 	<!-- head:js -->
-	<script src="assets/js/gameController/dist/gamecontroller.min.js"></script>
 	<script src="assets/js/jquery/dist/jquery.min.js"></script>
+	<script src="assets/js/gameController/dist/gamecontroller.min.js"></script>
 	<script src="assets/js/phaser/build/phaser.min.js"></script>
 	<script src="assets/js/state-transition/dist/phaser-state-transition-plugin.min.js"></script>
 	<script src="assets/js/scripts.js"></script>
